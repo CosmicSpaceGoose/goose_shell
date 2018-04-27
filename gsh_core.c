@@ -13,7 +13,7 @@
 #include "gsh_core.h"
 
 /*
-**		YEAP, ITS A MAIN  ###  GOOSE_SHELL V2.17.04.18
+**		YEAP, ITS A MAIN  ###  GOOSE_SHELL V2.26.04.18
 */
 
 static void	gsh_free_tok(t_ok **tok)
@@ -58,62 +58,40 @@ static void	free_sum_fkn_shit(t_orba **z)
 	free(cp);
 }
 
-void		show_torba(t_orba **z)							//<<<---☢
-{
-	int		i;
-	int		k;
-
-	i = 0;
-	while (z[i])
-	{
-		if (z[i]->tok > 3)
-			ft_dprintf(2, "%c\t", z[i]->tok);
-		if (z[i]->cmd)
-		{
-			write(2, "cmd=", 4);
-			k = 0;
-			while ((z[i])->cmd[k])
-			{
-				ft_dprintf(2, "[%s]", (z[i])->cmd[k]);
-				k++;
-			}
-			write(2, "\t", 1);
-		}
-		if (z[i]->red)
-		{
-			write(2, "red=", 4);
-			k = 0;
-			while ((z[i])->red[k])
-			{
-			ft_dprintf(2, "[%c:%d:%d:%d:%d:%s:%d]",
-	((z[i])->red[k])->io, ((z[i])->red[k])->old, ((z[i])->red[k])->new,
-	((z[i])->red[k])->amp, ((z[i])->red[k])->flgs, ((z[i])->red[k])->ptr,
-	((z[i])->red[k])->fd);
-				k++;
-			}
-		}
-		write(2, "\n", 1);
-		i++;
-	}
-}
-
 static void	gsh_pre_launch(t_ok **lines)
 {
 	int		pps[3];
 	t_orba	**z;
 
-	if (gsh_pc_validate(lines))
-		ft_putendl_fd("|< parcing/syntax error", 2);
-	else
+	if (lines)
 	{
-		z = gsh_parcer(lines);
-		pps[0] = 0;
-		pps[1] = 0;
-		pps[2] = 0;
-		gsh_cycle(z, pps, NULL, NULL);
-		free_sum_fkn_shit(z);
+		if (gsh_pc_validate(lines))
+			write(2, "|< parcing/syntax error\n", 24);
+		else
+		{
+			z = gsh_parcer(lines);
+			pps[0] = 0;
+			pps[1] = 0;
+			pps[2] = 0;
+			gsh_cycle(z, pps, NULL, NULL);
+			free_sum_fkn_shit(z);
+		}
+		gsh_free_tok(lines);
 	}
-	gsh_free_tok(lines);
+}
+
+char		***gsh_bucket(int mod, char **in)
+{
+	static char	**save;
+
+	if (mod == SAVE)
+		save = in;
+	else if (mod == FREE && save)
+	{
+		ft_free_arr((void **)(save));
+		save = NULL;
+	}
+	return (&save);
 }
 
 int			main(void)
@@ -130,7 +108,6 @@ int			main(void)
 	while (gsh_reader(&line, gsh_prompt(1)))
 	{
 		gsh_r_history_bucket(1, line);
-		// ft_dprintf(2, "[%s]\n", line);							//<<----☢
 		while ((ptr = ft_strrchr(line, 92)) && *(ptr + 1) == '\0'
 			&& *(ptr - 1) != 92)
 			gsh_readmoar_atzero(&line);
@@ -141,7 +118,7 @@ int			main(void)
 	}
 	// exit_draw();
 	gsh_r_history_bucket(-1, NULL);
-	gsh_bucket(3, 0);
+	gsh_bucket(FREE, 0);
 	system("leaks 21sh | tail -n 4");
 	return (rat);
 }

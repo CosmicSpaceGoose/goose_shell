@@ -34,22 +34,22 @@ static int	gsh_word(char *s, int *n, int i)
 {
 	char	c;
 
-	while (s[*n] && s[*n] != 59 && s[*n] != 32 && s[*n] != 9)
+	while (s[*n] && s[*n] != ';' && s[*n] != ' ' && s[*n] != '\t')
 	{
-		if ((s[*n] == 60 || s[*n] == 62)
-			|| (s[*n] == 38 && (s[*n + 1] == 60 || s[*n + 1] == 62))
-			|| (s[*n] >= 0 && s[*n] <= 9 && (s[*n + 1] == 60 ||
-				s[*n + 1] == 62) && (s[*n - 1] == 32 || s[*n - 1] == 9)))
+		if ((s[*n] == '<' || s[*n] == '>')
+			|| (s[*n] == '&' && (s[*n + 1] == '<' || s[*n + 1] == '>'))
+			|| (s[*n] >= 0 && s[*n] <= '\t' && (s[*n + 1] == '<' ||
+			s[*n + 1] == '>') && (s[*n - 1] == ' ' || s[*n - 1] == '\t')))
 			break ;
-		if (s[*n] == 92)
+		if (s[*n] == '\\')
 			(*n)++;
 		else if ((c = s[*n]) == '\"' || c == '\'')
 		{
 			(*n)++;
 			while (s[*n] && s[*n] != c)
 			{
+				(s[*n] != '\\') ? i++ : 0;
 				(*n)++;
-				i++;
 			}
 			i--;
 		}
@@ -62,15 +62,15 @@ static int	gsh_word(char *s, int *n, int i)
 static int	gsh_bldzhad(char *s, int *n, int i, int c)
 {
 	(s[*n] > 47 && s[*n] < 58) ? i++ : 0;
-	((s[*n + i] == 60 || s[*n + i] == 62)) ? i++ : 0;
-	((s[*n + i] == 60 || s[*n + i] == 62)) ? i++ : 0;
-	s[*n + i] == 38 ? i++ : 0;
+	(s[*n + i] == '<' || s[*n + i] == '>') ? i++ : 0;
+	(s[*n + i] == '<' || s[*n + i] == '>') ? i++ : 0;
+	s[*n + i] == '&' ? i++ : 0;
 	(*n) += i;
-	while (s[*n] == 32 || s[*n] == 9)
+	while (s[*n] == ' ' || s[*n] == '\t')
 		(*n)++;
-	while (s[*n] && s[*n] != 32 && s[*n] != 9)
+	while (s[*n] && s[*n] != ' ' && s[*n] != '\t')
 	{
-		if (s[*n] == 92)
+		if (s[*n] == '\\')
 			(*n)++;
 		else if ((c = s[*n]) == '\"' || c == '\'')
 		{
@@ -93,9 +93,9 @@ void		gsh_parcer_part(char *ln, char **cmd, char **red, int *c)
 	while (*ln)
 	{
 		c[2] = 0;
-		while (*ln == 32 || *ln == 9)
+		while (*ln == ' ' || *ln == '\t')
 			ln++;
-		if (*ln != 60 && *ln != 62 && *(ln + 1) != 60 && *(ln + 1) != 62)
+		if (*ln != '<' && *ln != '>' && *(ln + 1) != '<' && *(ln + 1) != '>')
 		{
 			if ((c[3] = gsh_word(ln, &c[2], 0)))
 			{
@@ -120,7 +120,7 @@ t_orba		*gsh_parce_apozh(char *line)
 	t_orba	*t;
 
 	t = (t_orba *)malloc(sizeof(t_orba));
-	t->cmd = (char **)malloc(sizeof(char *) * 2);
+	t->cmd = (char **)malloc(sizeof(char *) * (ft_strlen(line) + 1));
 	t->cmd[0] = ft_strdup(line);
 	t->cmd[1] = NULL;
 	t->red = NULL;

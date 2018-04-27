@@ -20,22 +20,25 @@ static int	gsh_pc_num_lines(char *l, int i, int c)
 {
 	while (*l)
 	{
-		if (*l != '|' && *l != 59)
-			while (*l && *l != '|' && *l != 59)
+		if (*l != '|' && *l != ';' && *l != '&')
+			while (*l && *l != '|' && *l != ';' && *l != '&')
 			{
 				if (*l == '\\')
 					l++;
-				else if ((c = *l) == 34 || c == 39)
+				else if ((c = *l) == '\'' || c == '\"')
 				{
 					l++;
 					while (*l && *l != c)
 						l++;
 					if (!*l)
-						return (write(2, "|< Parcing error\n", 19) && 0);
+					{
+						write(2, "|< Parcing error\n", 17);
+						return (0);
+					}
 				}
 				l++;
 			}
-		else if (((c = *l) == '|' || c == 59) && (l++))
+		else if (((c = *l) == '|' || c == ';' || c == '&') && (l++))
 			(*l && c == *l) ? l++ : 0;
 		i++;
 	}
@@ -48,18 +51,18 @@ static int	gsh_pc_len(char *line)
 	int i;
 
 	i = 0;
-	if ((c = line[i]) == '|' || c == ';')
+	if ((c = line[i]) == '|' || c == ';' || c == '&')
 	{
 		i++;
-		line[i] && line[i] == c ? i++ : 0;
+		(line[i] && line[i] == c) ? i++ : 0;
 	}
 	else
 	{
-		while (line[i] && line[i] != '|' && line[i] != ';')
+		while (line[i] && line[i] != '|' && line[i] != ';' && line[i] != '&')
 		{
 			if (line[i] == '\\')
 				i++;
-			else if ((c = line[i]) == 34 || c == 39)
+			else if ((c = line[i]) == '\'' || c == '\"')
 			{
 				i++;
 				while (line[i] != c)
@@ -80,6 +83,8 @@ t_ok		**gsh_pc_lines(char *line)
 	int		num;
 
 	num = gsh_pc_num_lines(line, 0, 0);
+	if (!num)
+		return (NULL);
 	out = (t_ok **)malloc(sizeof(t_ok *) * (num + 1));
 	j = 0;
 	i = 0;

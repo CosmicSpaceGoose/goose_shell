@@ -32,29 +32,27 @@ static int	gsh_pc_val_redir(char *line, int flg)
 		line++;
 	else if (*line)
 		return (-1);
-	if (*line)
-		return (-1);
 	return (flg);
 }
 
 static int	gsh_pc_val_wrds(char *line, int flg)
 {
-	while (*line && (*line == 32 || *line == 9))
+	while (*line && (*line == ' ' || *line == '\t'))
 		(line)++;
 	if (!*line && flg == 1)
 		return (-1);
-	while (*line && *line != '|' && *line != ';')
+	while (*line && *line != '|' && *line != ';' && *line != '&')
 	{
-		if (*line == 60 || *line == 62)
+		if (*line == '<' || *line == '>')
 		{
 			line++;
-			if ((*line == 60 || *line == 62) && (line++))
-				if (*line == 60 && *(line + 1) == 38)
+			if ((*line == '<' || *line == '>') && (line++))
+				if (*line == '<' && *(line + 1) == '&')
 					return (-1);
-			*line == 38 ? line++ : 0;
-			while (*line == 32 || *line == 9)
+			*line == '&' ? line++ : 0;
+			while (*line == ' ' || *line == '\t')
 				line++;
-			if (*line == 38 || !*line || *line == 59 || *line == '|')
+			if (!*line || *line == '&' || *line == ';' || *line == '|')
 				return (-1);
 		}
 		else
@@ -65,7 +63,7 @@ static int	gsh_pc_val_wrds(char *line, int flg)
 	return (flg);
 }
 
-static int	gsh_pc_get_token(char *str, int c)
+static int	gsh_pc_word_token(char *str, int c)
 {
 	int rat;
 
@@ -81,9 +79,9 @@ static int	gsh_pc_get_token(char *str, int c)
 		}
 		else if (*str == '\\')
 			str++;
-		else if (!c && (*str == 60 || *str == 62))
+		else if (!c && (*str == '<' || *str == '>'))
 		{
-			if (*str == 60)
+			if (*str == '<')
 				rat |= 1;
 			else
 				rat |= 2;
@@ -91,6 +89,25 @@ static int	gsh_pc_get_token(char *str, int c)
 		str++;
 	}
 	return (rat);
+}
+
+static int	gsh_pc_delim_token(char *str)
+{
+	int c;
+
+	c = 0;
+	if (*str == ';')
+		c = 'e';
+	else if (*str == '|')
+	{
+		if (*(str + 1) == '|')
+			c = 'o';
+		else
+			c = 'p';
+	}
+	else if (*str == '&' && *(str + 1) == '&')
+		c = 'a';
+	return (c);
 }
 
 int			gsh_pc_validate(t_ok **in)
@@ -102,18 +119,17 @@ int			gsh_pc_validate(t_ok **in)
 	while (*in)
 	{
 		str = (*in)->str;
-		if (*str && (*str == ';' || *str == '|'))
+		if (*str && (*str == ';' || *str == '|' || *str == '&'))
 		{
 			if ((flg = gsh_pc_val_redir(str, flg)) < 0)
 				return (1);
-			*str == ';' ? (*in)->tok = 'e' : 0;
-			*str == '|' ? (*in)->tok = 'p' : 0;
+			(*in)->tok = gsh_pc_delim_token(str);
 		}
 		else
 		{
 			if ((flg = gsh_pc_val_wrds(str, flg)) < 0)
 				return (1);
-			(*in)->tok = gsh_pc_get_token(str, 0);
+			(*in)->tok = gsh_pc_word_token(str, 0);
 		}
 		in++;
 	}

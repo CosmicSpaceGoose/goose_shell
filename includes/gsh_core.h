@@ -39,12 +39,28 @@
 # define WHT "\e[37m"
 # define NON "\e[0m"
 
+/*
+**	gsh_std_save_restore
+*/
+
 # define SAVE 1
 # define RESTORE 0
+
+/*
+**	pipeline
+*/
 
 # define BEGIN_PPL 1
 # define MIDDLE_PPL 2
 # define END_PPL 3
+
+/*
+**	gsh_bucket
+*/
+
+# define RETURN 0
+# define SAVE 1
+# define FREE 2
 
 typedef struct	s_ok
 {
@@ -76,41 +92,47 @@ typedef struct	s_orba
 	t_redir		**red;
 }				t_orba;
 
-int				env_read_flags(char ***av, char *c, char *path);
-void			exit_draw(void);
 char			***gsh_bucket(int mod, char **in);
-int				gsh_builtin_cmd(char **cmd);
-int				gsh_cd(char **av);
-int				gsh_echo(char **av);
-int				gsh_env(char **av);
 int				gsh_execute(char *cmd, char **av);
-int				gsh_exit(char **av);
 int				gsh_exit_status(int status, char *name);
 char			*gsh_get_env(char *name);
 int				gsh_get_path_name(char *out, char *path, char *name);
-int				gsh_help(char **av);
 void			gsh_init(int i);
 int				gsh_launch_cmnd(char *cmd, char **av);
-int				gsh_list_env(void);
 int				gsh_os_cmd(char **cmd, char *path);
 t_orba			**gsh_parcer(t_ok **lines);
-size_t			gsh_prompt(int mod);
 int				gsh_reader(char **line, size_t prompt);
 int				gsh_seek(t_orba *zee, int *pipes, int *fds);
-int				gsh_setenv(char **av);
-int				gsh_unsetenv(char **av);
-void			gsh_write_head(void);
-void			set_add_env(char *name, char *value);
-int				set_brwse_env(char *name);
-
 t_ok			**gsh_pc_lines(char *line);
 int				gsh_pc_validate(t_ok **in);
 void			gsh_std_save_restore(int mod);
 char			*gsh_r_history_bucket(int mod, char *str);
 void			gsh_readmoar_atzero(char **line);
-void		gsh_cycle(t_orba **z, int *pps, int *fds, int *cp);
+void			gsh_cycle(t_orba **z, int *pps, int *fds, int *cp);
+int				gsh_make_sum_redir(t_redir **red);
+void			gsh_open_close_pipes(int **fds, int **cp, int i, int mod);
+void			gsh_open_files(t_orba **z);
+void			gsh_close_files(t_orba *z, int *pps);
 
-// int				make_sum_redir(t_redir **red);
+/*
+**		builtins
+*/
+
+int				env_read_flags(char ***av, char *c, char *path);
+void			exit_draw(void);
+int				gsh_builtin_cmd(char **cmd);
+int				gsh_cd(char **av);
+int				gsh_echo(char **av);
+int				gsh_env(char **av);
+int				gsh_exit(char **av);
+int				gsh_help(char **av);
+int				gsh_list_env(void);
+size_t			gsh_prompt(int mod);
+int				gsh_setenv(char **av);
+int				gsh_unsetenv(char **av);
+void			gsh_write_head(void);
+void			set_add_env(char *name, char *value);
+int				set_brwse_env(char *name);
 
 //////////////////////////////////
 # define P(X) write(2, #X, 1);

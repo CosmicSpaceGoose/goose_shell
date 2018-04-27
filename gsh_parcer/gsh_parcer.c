@@ -18,13 +18,13 @@
 
 static void		gsh_skip_redir(char **s)
 {
-	if (*(*s + 1) == 60 || *(*s + 1) == 62)
+	if (*(*s + 1) == '<' || *(*s + 1) == '>')
 		(*s)++;
 	if (*(*s + 1) == '&')
 		(*s)++;
-	while (*(*s + 1) == 32 || *(*s + 1) == 9)
+	while (*(*s + 1) == ' ' || *(*s + 1) == '\t')
 		(*s)++;
-	while (*(*s + 1) && *(*s + 1) != 32 && *(*s + 1) != 9)
+	while (*(*s + 1) && *(*s + 1) != ' ' && *(*s + 1) != '\t')
 		(*s)++;
 }
 
@@ -35,13 +35,13 @@ static int		gsh_count_argv(char *s, int c)
 	ac = 0;
 	while (*s)
 	{
-		if (*s && *s != 32 && *s != 9)
+		if (*s && *s != ' ' && *s != '\t')
 			ac++;
-		while (*s && *s != 32 && *s != 9)
+		while (*s && *s != ' ' && *s != '\t')
 		{
-			if (*s == 60 || *s == 62)
+			if (*s == '<' || *s == '>')
 				gsh_skip_redir(&s);
-			else if (*s == 92)
+			else if (*s == '\\')
 				s++;
 			else if ((c = *s) == '\"' || c == '\'')
 			{
@@ -51,7 +51,7 @@ static int		gsh_count_argv(char *s, int c)
 			}
 			s++;
 		}
-		while (*s == 32 || *s == 9)
+		while (*s == ' ' || *s == '\t')
 			s++;
 	}
 	return (ac);
@@ -63,16 +63,16 @@ static int		gsh_count_red(char *s, int red)
 
 	while (*s)
 	{
-		if (*s == 60 || *s == 62)
+		if (*s == '<' || *s == '>')
 		{
 			s++;
-			if (*s == 60 || *s == 62)
+			if (*s == '<' || *s == '>')
 				s++;
 			red++;
 		}
 		else
 		{
-			if (*s == 59)
+			if (*s == ';')
 				s++;
 			else if ((c = *s) == '\"' || c == '\'')
 			{
@@ -99,7 +99,7 @@ static t_orba	*gsh_parce_elements(char *line)
 	int		c[4];
 
 	t = (t_orba *)malloc(sizeof(t_orba));
-	while (*line == 32 || *line == 9)
+	while (*line == ' ' || *line == '\t')
 		line++;
 	c[0] = gsh_count_argv(line, 0);
 	c[1] = gsh_count_red(line, 0);

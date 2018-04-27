@@ -13,15 +13,21 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror $(INC)
 SRC =	gsh_core.c\
-		gsh_core_toolz.c\
-		gsh_env.c\
-		gsh_env_process.c\
-		gsh_env_process_2.c\
-		gsh_graphics.c\
-		gsh_help.c\
+		gsh_execute.c\
 		gsh_init.c\
-		gsh_interpreter.c\
-		gsh_pipes.c\
+		gsh_pipeline.c\
+		gsh_pipeline_toolz.c\
+		gsh_pre_execute.c\
+		gsh_sum_redirections.c\
+		\
+		gsh_builtins/gsh_env.c\
+		gsh_builtins/gsh_env_process.c\
+		gsh_builtins/gsh_env_process_2.c\
+		gsh_builtins/gsh_graphics.c\
+		gsh_builtins/gsh_help.c\
+		gsh_builtins/gsh_setenv.c\
+		gsh_builtins/gsh_some_builtin1.c\
+		\
 		gsh_reader/gsh_reader.c\
 		gsh_reader/gsh_reader_autocomplete.c\
 		gsh_reader/gsh_reader_cut_copy_paste.c\
@@ -29,15 +35,14 @@ SRC =	gsh_core.c\
 		gsh_reader/gsh_reader_history.c\
 		gsh_reader/gsh_reader_sym.c\
 		gsh_reader/gsh_reader_tools.c\
+		\
 		gsh_parcer/gsh_parcer.c\
 		gsh_parcer/gsh_parcer_plus.c\
 		gsh_parcer/gsh_parcer_plus_plus.c\
 		gsh_parcer/gsh_parcer_redir.c\
 		gsh_parcer/gsh_pre_parcer.c\
-		gsh_parcer/gsh_pre_pc_val.c\
-		gsh_setenv.c\
-		gsh_some_builtin1.c
-		#gsh_some_redirections.c
+		gsh_parcer/gsh_pre_pc_val.c
+		
 
 OBJ = $(SRC:.c=.o)
 

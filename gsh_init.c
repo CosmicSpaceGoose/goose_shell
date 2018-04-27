@@ -48,11 +48,11 @@ void		gsh_init(int i)
 	while (i--)
 		envcp[i] = ft_strdup(environ[i]);
 	signal(SIGINT, SIG_IGN);
-	// signal(SIGQUIT, SIG_IGN);					//EMEREGENCY EXIT ON!!!
+	// signal(SIGQUIT, SIG_IGN);					//EMERGENCY EXIT ON!!!
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGINFO, SIG_IGN);
 	ft_bzero((void *)g_buffer, LINE_SIZE);
-	gsh_bucket(1, envcp);
+	gsh_bucket(SAVE, envcp);
 	gsh_std_save_restore(SAVE);
 	gsh_init_env();
 }

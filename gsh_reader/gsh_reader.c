@@ -49,6 +49,7 @@ static int	gsh_reader_cycle(int i, char *out, t_pos *pos)
 	while ((i = read(0, u.c, 8)))
 	{
 		u.c[i] = 0;
+		ft_dprintf(2, "%r\n", u.c);
 		if (gsh_reader_bell_chaek(u, pos, out))
 			write(0, "\a", 1);
 		else if (u.c[0] > 31 || u.c[0] == 127)
