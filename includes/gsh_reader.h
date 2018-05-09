@@ -36,6 +36,7 @@ typedef struct	s_hist
 	char			*tmp;
 	struct s_hist	*prv;
 	struct s_hist	*nxt;
+	unsigned		no;
 }				t_hist;
 
 typedef union	u_ych
@@ -82,6 +83,7 @@ t_hist			*gsh_r_history_bucket(int mod, char *str);
 void			gsh_r_home_end(char c, t_pos *pos);
 void			gsh_r_prnt_char(t_ych u, char *out, t_pos *pos, size_t size);
 void			gsh_r_redraw_line(char *out, t_pos *pos, size_t size, int mod);
+void			gsh_r_remove_history(t_hist *hist);
 void			gsh_r_shift_left(t_pos *pos);
 void			gsh_r_shift_right(t_pos *pos);
 void			gsh_r_cut_copy_paste(t_ych u, char *out, t_pos *pos);

@@ -13,19 +13,44 @@
 #include "gsh_core.h"
 #include "gsh_reader.h"
 
+static void	gsh_init_history(void)
+{
+	char	*file;
+	char	*line;
+	int		fd;
+
+	file = gsh_get_env("HISTFILE");
+	if (!access(file, F_OK) && !access(file, R_OK))
+	{
+		fd = open(file, O_RDONLY);
+		while (get_next_line(fd, &line) > 0)
+		{
+			gsh_r_history_bucket(0, 0);
+			gsh_r_history_bucket(1, line);
+			free(line);
+		}
+		close(fd);
+	}
+}
+
 static void	gsh_init_env(void)
 {
 	char		*str;
 	char		buf[BUFSIZE + 1];
 
 	set_add_env("?", "0", SH);
+	str = ft_itoa(getpid());
+	set_add_env("$", str, SH);
+	free(str);
+	str = ft_strjoin(getpwuid(getuid())->pw_dir, "/.gsh_history");
+	set_add_env("HISTFILE", str, SH);
+	free(str);
+	set_add_env("HISTSIZE", "42", SH);
+	set_add_env("HISTFILESIZE", "42", SH);
 	set_add_env("HOME", getpwuid(getuid())->pw_dir, ENV);
 	getcwd(buf, BUFSIZE);
 	set_add_env("PWD", buf, ENV);
 	set_add_env("OLDPWD", buf, ENV);
-	str = ft_itoa(getpid());
-	set_add_env("$", str, SH);
-	free(str);
 	if (!(str = gsh_get_env("SHLVL")))
 		set_add_env("SHLVL", "1", ENV);
 	else
@@ -55,6 +80,7 @@ void		gsh_init(int i)
 	gsh_bucket(SAVE_ENV, envcp);
 	gsh_std_save_restore(SAVE);
 	gsh_init_env();
+	gsh_init_history();
 }
 
 void		gsh_std_save_restore(int mod)
@@ -73,17 +99,4 @@ void		gsh_std_save_restore(int mod)
 		dup2(std[1], 1);
 		dup2(std[2], 2);
 	}
-}
-
-void		gsh_readmoar_atzero(char **line)
-{
-	char *ptr;
-	char *tmp;
-
-	gsh_reader(&tmp, write(0, "> ", 2));
-	ptr = ft_strsub(*line, 0, ft_strlen(*line) - 1);
-	free(*line);
-	*line = ft_strjoin(ptr, tmp);
-	free(tmp);
-	free(ptr);
 }

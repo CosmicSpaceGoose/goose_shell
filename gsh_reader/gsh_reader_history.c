@@ -21,6 +21,7 @@ static t_hist	*gsh_r_hist_add_elem(t_hist *hist)
 		hist->str = NULL;
 		hist->prv = NULL;
 		hist->nxt = NULL;
+		hist->no = 1;
 	}
 	else if (hist->str)
 	{
@@ -29,6 +30,7 @@ static t_hist	*gsh_r_hist_add_elem(t_hist *hist)
 		hist->nxt->str = NULL;
 		hist->nxt->prv = hist;
 		hist->nxt->nxt = NULL;
+		hist->nxt->no = hist->no + 1;
 		return (hist->nxt);
 	}
 	return (hist);
@@ -49,29 +51,9 @@ static t_hist	*gsh_r_hist_rewrite_elem(char *str, t_hist *hist)
 		free(hist->tmp);
 		hist->tmp = NULL;
 	}
-	if (str && *str)
+	if (str && !ft_is_blank(str))
 		hist->str = ft_strdup(str);
 	return (hist);
-}
-
-static void		gsh_r_remove_history(t_hist *hist)
-{
-	t_hist *tmp;
-
-	while (hist->prv)
-		hist = hist->prv;
-	while (hist)
-	{
-		tmp = hist;
-		hist = hist->nxt;
-		if (tmp->str)
-			free(tmp->str);
-		if (tmp->tmp)
-			free(tmp->tmp);
-		free(tmp);
-		tmp = NULL;
-	}
-	hist = NULL;
 }
 
 /*

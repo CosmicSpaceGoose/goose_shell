@@ -13,7 +13,7 @@
 #include "gsh_core.h"
 
 /*
-**		YEAP, ITS A MAIN  ###  GOOSE_SHELL V2.26.04.18
+**		YEAP, ITS A MAIN  ###  GOOSE_SHELL V2.09.05.18
 */
 
 static void	gsh_free_tok(t_ok **tok)
@@ -78,6 +78,19 @@ static void	gsh_pre_launch(t_ok **lines)
 		}
 		gsh_free_tok(lines);
 	}
+}
+
+static void	gsh_readmoar_atzero(char **line)
+{
+	char *ptr;
+	char *tmp;
+
+	gsh_reader(&tmp, write(0, "> ", 2));
+	ptr = ft_strsub(*line, 0, ft_strlen(*line) - 1);
+	free(*line);
+	*line = ft_strjoin(ptr, tmp);
+	free(tmp);
+	free(ptr);
 }
 
 int			main(void)

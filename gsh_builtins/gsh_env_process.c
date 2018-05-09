@@ -19,15 +19,13 @@
 int			gsh_list_env(void)
 {
 	char	**environ;
-	int		i;
 
-	i = 0;
 	if ((environ = gsh_bucket(RETURN_ENV, 0)))
 	{
-		while (environ[i])
+		while (*environ)
 		{
-			ft_putendl(environ[i]);
-			i++;
+			ft_putendl(*environ);
+			environ++;
 		}
 	}
 	return (0);

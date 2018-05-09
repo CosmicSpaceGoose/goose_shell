@@ -118,7 +118,7 @@ int				gsh_seek(t_orba *zee, int *pipes, int *fds);
 t_ok			**gsh_pc_lines(char *line);
 int				gsh_pc_validate(t_ok **in);
 void			gsh_std_save_restore(int mod);
-void			gsh_readmoar_atzero(char **line);
+//void			gsh_readmoar_atzero(char **line);
 void			gsh_cycle(t_orba **z, int *pps, int *fds, int *cp);
 int				gsh_make_sum_redir(t_redir **red);
 void			gsh_open_close_pipes(int **fds, int **cp, int i, int mod);

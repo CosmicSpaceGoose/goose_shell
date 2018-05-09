@@ -14,40 +14,31 @@
 
 char		*gsh_get_env(char *name)
 {
-	char		*env;
-	char		*ptr;
-	char		**environ;
-	int			i;
+	char	*env;
+	char	*ptr;
+	char	**environ;
+	char	*rat;
 
-	i = 0;
+	rat = NULL;
 	if ((environ = gsh_bucket(RETURN_ENV, 0)))
-		while (environ[i])
+		while (*environ)
 		{
-			ptr = ft_strchr(environ[i], '=');
-			env = ft_strsub(environ[i], 0, ptr - environ[i]);
-			if (ft_strcmp(name, env) == 0)
-			{
-				free(env);
-				return (ptr + 1);
-			}
+			ptr = ft_strchr(*environ, '=');
+			env = ft_strsub(*environ, 0, ptr - *environ);
+			!ft_strcmp(name, env) ? rat = ptr + 1 : 0;
 			free(env);
-			i++;
+			environ++;
 		}
-	i = 0;
 	if ((environ = gsh_bucket(RETURN_SH, 0)))
-		while (environ[i])
+		while (*environ)
 		{
-			ptr = ft_strchr(environ[i], '=');
-			env = ft_strsub(environ[i], 0, ptr - environ[i]);
-			if (ft_strcmp(name, env) == 0)
-			{
-				free(env);
-				return (ptr + 1);
-			}
+			ptr = ft_strchr(*environ, '=');
+			env = ft_strsub(*environ, 0, ptr - *environ);
+			!ft_strcmp(name, env) ? rat = ptr + 1 : 0;
 			free(env);
-			i++;
+			environ++;
 		}
-	return (NULL);
+	return (rat);
 }
 
 int			gsh_unsetenv(char **av)
@@ -62,17 +53,15 @@ int			gsh_unsetenv(char **av)
 	}
 	while (*av)
 	{
-		if ((i = set_brwse_env(*av, ENV)) == -1)
+		if ((i = set_brwse_env(*av, ENV)) != -1)
 		{
-			av++;
-			continue ;
-		}
-		environ = gsh_bucket(RETURN_ENV, 0);
-		free(environ[i]);
-		while (environ[i])
-		{
-			environ[i] = environ[i + 1];
-			i++;
+			environ = gsh_bucket(RETURN_ENV, 0);
+			free(environ[i]);
+			while (environ[i])
+			{
+				environ[i] = environ[i + 1];
+				i++;
+			}
 		}
 		av++;
 	}

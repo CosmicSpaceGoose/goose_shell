@@ -6,7 +6,7 @@
 #    By: dlinkin <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/26 13:13:13 by dlinkin           #+#    #+#              #
-#    Updated: 2018/04/23 13:32:29 by dlinkin          ###   ########.fr        #
+#    Updated: 2018/05/09 18:37:30 by dlinkin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ INC = ./includes
 CFLAGS = -Wall -Wextra -Werror -I$(INC)
 SRC = ft_atoi.c\
 	ft_bzero.c\
+	ft_is_blank.c\
 	ft_isalnum.c\
 	ft_isalpha.c\
 	ft_isascii.c\
