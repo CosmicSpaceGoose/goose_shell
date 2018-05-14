@@ -12,6 +12,27 @@
 
 #include "gsh_reader.h"
 
+static void		gsh_r_check_size(t_hist *hist)
+{
+	unsigned	num;
+	t_hist		*tmp;
+
+	if (hist->no <= g_hst_sz)
+		return ;
+	num = hist->no - g_hst_sz;
+	while (hist->prv)
+		hist = hist->prv;
+	while (hist && hist->no <= num)
+	{
+		tmp = hist;
+		hist = hist->nxt;
+		hist->prv = NULL;
+		free(tmp->tmp);
+		free(tmp->str);
+		free(tmp);
+	}
+}
+
 static t_hist	*gsh_r_hist_add_elem(t_hist *hist)
 {
 	if (!hist)
@@ -31,13 +52,16 @@ static t_hist	*gsh_r_hist_add_elem(t_hist *hist)
 		hist->nxt->prv = hist;
 		hist->nxt->nxt = NULL;
 		hist->nxt->no = hist->no + 1;
-		return (hist->nxt);
+		hist = hist->nxt;
 	}
+	gsh_r_check_size(hist);
 	return (hist);
 }
 
 static t_hist	*gsh_r_hist_rewrite_elem(char *str, t_hist *hist)
 {
+	if (!hist)
+		return (NULL);
 	while (hist->prv)
 		hist = hist->prv;
 	while (hist->nxt)
@@ -56,54 +80,23 @@ static t_hist	*gsh_r_hist_rewrite_elem(char *str, t_hist *hist)
 	return (hist);
 }
 
-/*
-**	mod:
-**	0 - on start, create hist elem
-**	1 - on return, add new elem, erase tmp
-**	2 - page up
-**	3 - page down
-**	-1 - on shell exit, erase history
-*/
-
-static t_hist	*gsh_r_browse_history(int mod, t_hist **hist, char *str)
-{
-	if (mod == 2)
-	{
-		if ((*hist)->tmp)
-			free((*hist)->tmp);
-		(*hist)->tmp = ft_strdup(str);
-		(*hist) = (*hist)->prv;
-		if ((*hist)->tmp)
-			return (*hist);
-		return (*hist);
-	}
-	if ((*hist)->tmp)
-		free((*hist)->tmp);
-	(*hist)->tmp = ft_strdup(str);
-	(*hist) = (*hist)->nxt;
-	if ((*hist)->tmp)
-		return (*hist);
-	return (*hist);
-}
-
 t_hist			*gsh_r_history_bucket(int mod, char *str)
 {
 	static t_hist	*hist;
 
-	if ((mod == 2 && !hist->prv) || (mod == 3 && !hist->nxt))
+	if ((mod == PGUP && !hist->prv) || (mod == PGDWN && !hist->nxt))
 		write(0, "\a", 1);
-	else if (mod == 0)
+	else if (mod == CREATE && g_hst_sz)
 		hist = gsh_r_hist_add_elem(hist);
-	else if (mod == 1)
+	else if (mod == ADD && g_hst_sz)
 		hist = gsh_r_hist_rewrite_elem(str, hist);
-	else if (mod == 2 || mod == 3)
+	else if (mod == PGUP || mod == PGDWN)
 		return (gsh_r_browse_history(mod, &hist, str));
-	else if (mod == -1)
-	{
-		gsh_r_remove_history(hist);
-		hist = NULL;
-	}
-	else if (mod == -2)
+	else if (mod == ERASE)
+		hist = gsh_r_remove_history(hist);
+	else if (mod == RETURN)
 		return (hist);
+	else if (mod == DELONE)
+		hist = gsh_r_erase_elem(hist, (unsigned)ft_atoi(str));
 	return (NULL);
 }

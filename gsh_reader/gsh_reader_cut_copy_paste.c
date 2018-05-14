@@ -26,7 +26,7 @@ static void	gsh_r_copy_line(uintmax_t d, char *out, t_pos *pos)
 		pos->kur += size;
 		pos->len += size;
 		gsh_r_redraw_line(out, pos, size, 1);
-		if (gsh_r_check_pos(pos))
+		if ((pos->kur + pos->prompt) % pos->col == 0)
 		{
 			if (pos->kur == pos->len)
 				tputs(tgetstr("do", 0), 1, ft_putint);

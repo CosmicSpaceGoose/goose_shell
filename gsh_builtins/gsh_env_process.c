@@ -57,8 +57,8 @@ static int	env_usage(int err, char c)
 		ft_dprintf(2, "%s%c\n", "env: illegal option -- ", c);
 	else if (err == 2)
 		ft_dprintf(2, "%s%c\n", "env: option requires an argument -- ", c);
-	ft_dprintf(2, "%s", "usage: env [-i] [-u name] [name=value ...] [utility\
- [argument ...]]\n");
+	ft_dprintf(2, "%s", "usage: env [-i] [-u name] [name=value ...] [utility \
+[argument ...]]\n");
 	return (1);
 }
 

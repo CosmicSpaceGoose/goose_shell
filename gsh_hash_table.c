@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_blank.c                                      :+:      :+:    :+:   */
+/*   gsh_hash_table.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlinkin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 18:34:45 by dlinkin           #+#    #+#             */
-/*   Updated: 2018/05/09 18:36:56 by dlinkin          ###   ########.fr       */
+/*   Created: 2018/05/14 18:03:05 by dlinkin           #+#    #+#             */
+/*   Updated: 2018/05/14 18:03:06 by dlinkin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_is_blank(char *str)
+#include "gsh_core.h"
+
+void	gsh_init_hash_table(void)
 {
-	if (!str)
-		return (1);
-	while (*str)
-	{
-		if (*str != ' ' && *str != '\n' && *str != '\t')
-			return (0);
-		str++;
-	}
-	return (1);
+
+}
+
+char	*func(char *cmd)
+{
+
+	return (arr[hash_key]);
 }

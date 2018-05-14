@@ -38,7 +38,8 @@ void		gsh_r_redraw_line(char *out, t_pos *pos, size_t size, int mod)
 	if (mod == 1)
 	{
 		tputs(tgetstr("cd", 0), 1, ft_putint);
-		tputs(out + pos->kur - size, 1, ft_putint);
+		ft_dprintf(0, "%s", out + pos->kur - size);					//<<-----
+		// tputs(out + pos->kur - size, 1, ft_putint);
 		if (pos->len != pos->kur)
 			tputs(tgoto(tgetstr("LE", 0), 1, pos->len - pos->kur)
 				, 1, ft_putint);
@@ -55,22 +56,23 @@ void		gsh_r_redraw_line(char *out, t_pos *pos, size_t size, int mod)
 		gsh_redraw_on_resize(save_out, save_pos);
 }
 
-int			gsh_r_check_pos(t_pos *pos)
+void		sum_save_function_for_winsize(int mod, t_pos *pos)
 {
-	size_t kur;
+	static t_pos *save;
 
-	tgetent(0, getenv("TERM"));
-	pos->col = tgetnum("co");
-	kur = pos->kur + pos->prompt;
-	if (kur % pos->col == 0)
-		return (1);
-	return (0);
+	if (mod == 0)
+		save = pos;
+	else if (mod == 1)
+	{
+		tgetent(0, getenv("TERM"));
+		save->col = (size_t)tgetnum("co");
+	}
 }
 
 void		gsh_r_shift_right(t_pos *pos)
 {
 	pos->kur++;
-	if (gsh_r_check_pos(pos))
+	if ((pos->kur + pos->prompt) % pos->col == 0)
 	{
 		tputs(tgetstr("do", 0), 1, ft_putint);
 		tputs(tgetstr("cr", 0), 1, ft_putint);
@@ -81,7 +83,7 @@ void		gsh_r_shift_right(t_pos *pos)
 
 void		gsh_r_shift_left(t_pos *pos)
 {
-	if (gsh_r_check_pos(pos))
+	if ((pos->kur + pos->prompt) % pos->col == 0)
 	{
 		tputs(tgetstr("up", 0), 1, ft_putint);
 		tputs(tgoto(tgetstr("RI", 0), 1, pos->col - 1), 1, ft_putint);

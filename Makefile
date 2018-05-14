@@ -13,6 +13,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror $(INC)
 SRC =	gsh_core.c\
+		gsh_end.c\
 		gsh_execute.c\
 		gsh_init.c\
 		gsh_pipeline.c\
@@ -26,6 +27,7 @@ SRC =	gsh_core.c\
 		gsh_builtins/gsh_graphics.c\
 		gsh_builtins/gsh_help.c\
 		gsh_builtins/gsh_history.c\
+		gsh_builtins/gsh_history_toolz.c\
 		gsh_builtins/gsh_set_unset.c\
 		gsh_builtins/gsh_setenv.c\
 		gsh_builtins/gsh_some_builtin1.c\
@@ -37,6 +39,8 @@ SRC =	gsh_core.c\
 		gsh_reader/gsh_reader_cut_copy_paste.c\
 		gsh_reader/gsh_reader_esc.c\
 		gsh_reader/gsh_reader_history.c\
+		gsh_reader/gsh_reader_history_exclamation.c\
+		gsh_reader/gsh_reader_history_toolz.c\
 		gsh_reader/gsh_reader_reverse_search.c\
 		gsh_reader/gsh_reader_sym.c\
 		gsh_reader/gsh_reader_tools.c\

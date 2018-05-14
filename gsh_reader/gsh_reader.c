@@ -5,34 +5,37 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlinkin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/05 14:58:32 by dlinkin           #+#    #+#             */
-/*   Updated: 2018/03/05 14:59:08 by dlinkin          ###   ########.fr       */
+/*   Created: 2018/05/10 12:37:32 by dlinkin           #+#    #+#             */
+/*   Updated: 2018/05/10 12:37:34 by dlinkin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gsh_reader.h"
 
 /*
-**	GSH_READER V01_05_18
+**	GSH_READER V10_05_18
 **
 **	MAIN CYCLE & BELL SIGNAL ON NON-VALID INPUT
 */
 
 static int	gsh_reader_bell_chaek(t_ych in, t_pos *pos, char *out)
 {
-	if ((in.d == 27 || in.d == K_SHFT_DWN || in.d == K_SHFT_ALT_DWN) && !*out)
+	if ((in.d == 27 || in.d == K_SHFT_DWN || in.d == K_SHFT_ALT_DWN) && !*out
+		&& !g_srch_md)
 		return (1);
 	else if ((in.d == K_ARRW_RGHT || in.d == K_END || in.d == K_DEL || in.d ==
 		K_ALT_RGHT || in.d == K_SHFT_RGHT || in.d == K_SHFT_ALT_RGHT) &&
-		pos->kur == pos->len)
+		pos->kur == pos->len && !g_srch_md)
 		return (1);
 	else if ((in.d == K_ARRW_LFT || in.d == K_HOME || in.d == K_ALT_LFT
-		|| in.d == K_SHFT_LFT || in.d == K_SHFT_ALT_LFT) && !(pos->kur))
+		|| in.d == K_SHFT_LFT || in.d == K_SHFT_ALT_LFT) && !(pos->kur)
+		&& !g_srch_md)
 		return (1);
-	else if (in.d == K_ARRW_UP && !((pos->kur + pos->prompt) / pos->col))
+	else if (in.d == K_ARRW_UP && !((pos->kur + pos->prompt) / pos->col)
+		&& !g_srch_md)
 		return (1);
 	else if (in.d == K_ARRW_DWN && !(((pos->len + pos->prompt) /
-			pos->col) - ((pos->kur + pos->prompt) / pos->col)))
+		pos->col) - ((pos->kur + pos->prompt) / pos->col)) && !g_srch_md)
 		return (1);
 	else if ((in.d == 127 && !(pos->kur) && !g_srch_md) || ((in.d != 127 &&
 		(int)(ft_strlen(out) + ft_strlen(in.c)) > LINE_SIZE)))
@@ -47,6 +50,8 @@ static int	gsh_reader_cycle(int i, char *out, t_pos *pos)
 	t_ych	u;
 
 	u.d = 0;
+	g_srch_md = 0;
+	sum_save_function_for_winsize(0, pos);
 	gsh_r_redraw_line(out, pos, 0, 2);
 	while ((i = read(0, u.c, 8)))
 	{
@@ -60,9 +65,10 @@ static int	gsh_reader_cycle(int i, char *out, t_pos *pos)
 			if ((i = gsh_r_ctrl_char(u.c[0], out, pos)) < 2)
 				break ;
 		}
-		else if (u.c[0] == 27)
+		else if (u.c[0] == 27 && !g_srch_md)
 			gsh_r_esc_seq(u, out, pos);
-		g_srch_md ? gsh_r_search(u, out, pos) : 0;
+		if (g_srch_md && (u.c[0] > 31 || u.c[0] < 0))
+			gsh_r_search(u, out, pos);
 		u.d = 0;
 	}
 	return (i);
@@ -72,7 +78,7 @@ void		gsh_reader_signal(int signo)
 {
 	if (signo == SIGWINCH)
 	{
-		tgetent(0, getenv("TERM"));
+		sum_save_function_for_winsize(1, 0);
 		gsh_r_redraw_line(NULL, NULL, 0, 0);
 	}
 }
@@ -91,20 +97,20 @@ int			gsh_reader(char **line, size_t prompt)
 	t_pos			*pos;
 
 	tcgetattr(0, &tstr);
-	tgetent(0, getenv("TERM"));
+	tgetent(0, gsh_get_env("TERM"));
 	copy = tstr;
 	tstr.c_lflag ^= ICANON;
 	tstr.c_lflag ^= ECHO;
 	tstr.c_lflag ^= ISIG;
 	ft_bzero((void *)out, LINE_SIZE);
 	tcsetattr(0, TCSAFLUSH, &tstr);
-	gsh_r_history_bucket(0, 0);
+	g_hst_sz = (unsigned)ft_atoi(gsh_get_env("HISTSIZE"));
+	gsh_r_history_bucket(CREATE, 0);
 	pos = (t_pos *)malloc(sizeof(t_pos));
 	pos->prompt = prompt;
 	signal(SIGWINCH, gsh_reader_signal);
-	g_srch_md = 0;
-	if ((i = gsh_reader_cycle(0, out, pos)))
-		*line = ft_strdup(out);
+	(i = gsh_reader_cycle(0, out, pos)) ? *line = ft_strdup(out) : 0;
+	ft_strchr(*line, '!') ? *line = gsh_r_history_replace_mark(*line, 0) : 0;
 	free(pos);
 	signal(SIGWINCH, SIG_DFL);
 	tcsetattr(0, TCSANOW, &copy);

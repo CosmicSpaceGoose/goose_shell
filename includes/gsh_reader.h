@@ -22,6 +22,18 @@
 # define LINE_SIZE 4096
 # define SRCH_BUF_SIZE 1024
 
+/*
+**	gsh_r_history_bucket mod:
+*/
+
+# define PGDWN 3
+# define PGUP 2
+# define ADD 1
+# define CREATE 0
+# define ERASE -1
+# define RETURN -2
+# define DELONE -3
+
 typedef struct	s_pos
 {
 	size_t		kur;
@@ -48,6 +60,7 @@ typedef union	u_ych
 char			g_buffer[LINE_SIZE];
 int				g_srch_md;
 char			g_srch_buf[SRCH_BUF_SIZE];
+unsigned		g_hst_sz;
 
 /*
 **	KEYCODES
@@ -74,23 +87,27 @@ char			g_srch_buf[SRCH_BUF_SIZE];
 # define K_SHFT_ALT_LFT 19193286420945691
 
 int				ft_putint(int c);
+int				get_max_name(t_list *lst);
+char			*gsh_get_env(char *name);
 size_t			gsh_prompt(int mod);
 void			gsh_r_autocomplete(char *out, t_pos *pos);
-int				gsh_r_check_pos(t_pos *pos);
+t_hist			*gsh_r_browse_history(int mod, t_hist **hist, char *str);
 int				gsh_r_ctrl_char(char c, char *out, t_pos *pos);
+t_hist			*gsh_r_erase_elem(t_hist *hist, unsigned num);
 void			gsh_r_esc_seq(t_ych u, char *out, t_pos *pos);
 t_hist			*gsh_r_history_bucket(int mod, char *str);
 void			gsh_r_home_end(char c, t_pos *pos);
 void			gsh_r_prnt_char(t_ych u, char *out, t_pos *pos, size_t size);
 void			gsh_r_redraw_line(char *out, t_pos *pos, size_t size, int mod);
-void			gsh_r_remove_history(t_hist *hist);
+t_hist			*gsh_r_remove_history(t_hist *hist);
+char			*gsh_r_history_replace_mark(char *line, int k);
+void			gsh_r_search(t_ych u, char *out, t_pos *pos);
 void			gsh_r_shift_left(t_pos *pos);
 void			gsh_r_shift_right(t_pos *pos);
 void			gsh_r_cut_copy_paste(t_ych u, char *out, t_pos *pos);
 void			gogo_filename(char *str, size_t len, t_pos *pos, char *out);
 void			reprint(t_list *lst, char *out, t_pos *pos, size_t len);
-void			gsh_r_search(t_ych u, char *out, t_pos *pos);
 void			rewind_cursor(size_t len, t_pos *pos);
-int				get_max_name(t_list *lst);
+void			sum_save_function_for_winsize(int mod, t_pos *pos);
 
 #endif

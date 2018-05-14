@@ -58,7 +58,7 @@ static void	free_sum_fkn_shit(t_orba **z)
 	free(cp);
 }
 
-static void	gsh_pre_launch(t_ok **lines)
+void		gsh_pre_launch(t_ok **lines)
 {
 	int		pps[3];
 	t_orba	**z;
@@ -99,25 +99,24 @@ int			main(void)
 	char	*ptr;
 	int		rat;
 
-	if (!isatty(0))
+	if (!isatty(0) || gsh_init())
 		return (0);
-	gsh_init(0);
 	rat = 0;
 	// gsh_write_head();
 	while (gsh_reader(&line, gsh_prompt(1)))
 	{
-		gsh_r_history_bucket(1, line);
+		if (!line)
+			continue ;
+		gsh_r_history_bucket(ADD, line);
 		while ((ptr = ft_strrchr(line, 92)) && *(ptr + 1) == '\0'
 			&& *(ptr - 1) != 92)
 			gsh_readmoar_atzero(&line);
-		line[0] ? gsh_pre_launch(gsh_pc_lines(line)) : 0;
+		*line ? gsh_pre_launch(gsh_pc_lines(line)) : 0;
 		free(line);
 		if ((rat = ft_atoi(gsh_get_env("?"))) > 255)
 			break ;
 	}
 	// exit_draw();
-	gsh_r_history_bucket(-1, NULL);
-	gsh_bucket(FREE_ALL, 0);
-	system("leaks 21sh | tail -n 4");
+	gsh_end();
 	return (rat);
 }

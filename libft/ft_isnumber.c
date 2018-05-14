@@ -12,7 +12,13 @@
 
 int		ft_isnumber(char *str)
 {
-	while (str && *str)
+	if (!str)
+		return (0);
+	while (*str == ' ' || *str == '\t' || *str == '\n')
+		str++;
+	if (*str == '+' || *str == '-')
+		str++;
+	while (*str)
 	{
 		if (!(*str > 47 && *str < 58))
 			return (0);

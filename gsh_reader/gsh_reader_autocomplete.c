@@ -112,7 +112,8 @@ void			gsh_r_autocomplete(char *out, t_pos *pos)
 		gsh_r_shift_right(pos);
 	ft_strncpy(s, out + len, pos->kur - len);
 	s[pos->kur - len] = 0;
-	if (zeroed(out, len) && *s != '~' && *s != '$' && *s != '.' && *s != '/')
+	if (zeroed(out, len) && *s != '~' && *s != '$' && *s != '.' && *s != '/'
+		&& *s != '!')
 		gogo_commandname(s, pos->kur - len, pos, out);
 	else if (*s == '$')
 		gogo_envarname(s + 1, pos->kur - len - 1, pos, out);

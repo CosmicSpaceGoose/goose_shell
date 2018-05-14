@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_blank.c                                      :+:      :+:    :+:   */
+/*   gsh_end.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlinkin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/09 18:34:45 by dlinkin           #+#    #+#             */
-/*   Updated: 2018/05/09 18:36:56 by dlinkin          ###   ########.fr       */
+/*   Created: 2018/05/14 16:56:32 by dlinkin           #+#    #+#             */
+/*   Updated: 2018/05/14 16:56:33 by dlinkin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_is_blank(char *str)
+#include "gsh_core.h"
+
+void	gsh_end(void)
 {
-	if (!str)
-		return (1);
-	while (*str)
-	{
-		if (*str != ' ' && *str != '\n' && *str != '\t')
-			return (0);
-		str++;
-	}
-	return (1);
+	/* */
+	gsh_r_history_bucket(ERASE, NULL);
+	gsh_bucket(FREE_ALL, 0);
+	system("leaks 21sh | tail -n 4");
 }

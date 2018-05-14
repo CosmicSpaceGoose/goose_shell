@@ -23,7 +23,7 @@ static void	gsh_r_backspace(char *out, t_pos *pos)
 	else
 		ft_memmove(out + pos->kur - 1, out + pos->kur, ft_strlen(out)
 			- pos->kur + 1);
-	if (gsh_r_check_pos(pos))
+	if ((pos->kur + pos->prompt) % pos->col == 0)
 	{
 		tputs(tgetstr("up", 0), 1, ft_putint);
 		tputs(tgoto(tgetstr("RI", 0), 1, pos->col - 1), 1, ft_putint);
@@ -45,8 +45,9 @@ void		gsh_r_prnt_char(t_ych u, char *out, t_pos *pos, size_t size)
 		ft_memcpy(out + pos->kur, u.c, size);
 		pos->kur += size;
 		pos->len += size;
-		out[0] ? gsh_r_redraw_line(out, pos, size, 1) : 0;
-		if (gsh_r_check_pos(pos))
+		if (out[0])
+			gsh_r_redraw_line(out, pos, size, 1);
+		if ((pos->kur + pos->prompt) % pos->col == 0)
 		{
 			if (pos->kur == pos->len)
 				tputs(tgetstr("do", 0), 1, ft_putint);
@@ -59,8 +60,6 @@ void		gsh_r_prnt_char(t_ych u, char *out, t_pos *pos, size_t size)
 
 void		gsh_r_search_switch(char *out, t_pos *pos)
 {
-	size_t	len;
-
 	g_srch_md ^= 1;
 	if (g_srch_md)
 	{
@@ -71,8 +70,7 @@ void		gsh_r_search_switch(char *out, t_pos *pos)
 	}
 	else
 	{
-		len = ft_strlen(g_srch_buf) + 4 + pos->kur;
-		rewind_cursor(len, pos);
+		rewind_cursor(ft_strlen(g_srch_buf) + 4 + pos->kur, pos);
 		tputs(tgetstr("cd", 0), 1, ft_putint);
 	}
 	ft_bzero((void *)g_srch_buf, SRCH_BUF_SIZE);

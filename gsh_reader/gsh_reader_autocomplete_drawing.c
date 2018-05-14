@@ -124,7 +124,7 @@ void			reprint(t_list *lst, char *out, t_pos *pos, size_t len)
 		pos->kur += lst->content_size - len - 1;
 		pos->len += lst->content_size - len - 1;
 		gsh_r_redraw_line(out, pos, lst->content_size - len - 1, 1);
-		if (gsh_r_check_pos(pos))
+		if ((pos->kur + pos->prompt) % pos->col == 0)
 		{
 			if (pos->kur == pos->len)
 				tputs(tgetstr("do", 0), 1, ft_putint);

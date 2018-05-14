@@ -11,22 +11,24 @@
 /* ************************************************************************** */
 
 #include "gsh_core.h"
-#include "gsh_reader.h"
 
-static void	gsh_init_history(void)
+void		gsh_h_init_history(char *str)
 {
 	char	*file;
 	char	*line;
 	int		fd;
 
-	file = gsh_get_env("HISTFILE");
-	if (!access(file, F_OK) && !access(file, R_OK))
+	if (!str)
+		file = gsh_get_env("HISTFILE");
+	else
+		file = str;
+	if ((fd = open(file, O_RDONLY)) != -1)
 	{
-		fd = open(file, O_RDONLY);
+		g_hst_sz = (unsigned)ft_atoi(gsh_get_env("HISTSIZE"));
 		while (get_next_line(fd, &line) > 0)
 		{
-			gsh_r_history_bucket(0, 0);
-			gsh_r_history_bucket(1, line);
+			gsh_r_history_bucket(CREATE, 0);
+			gsh_r_history_bucket(ADD, line);
 			free(line);
 		}
 		close(fd);
@@ -61,11 +63,41 @@ static void	gsh_init_env(void)
 	}
 }
 
-void		gsh_init(int i)
+static int	gsh_overwrite_env(void)
+{
+	char	*str;
+	int		fd;
+	int		rat;
+
+	str = ft_strjoin(getpwuid(getuid())->pw_dir, "/.gshrc");
+	set_add_env("GSHRC", str, SH);
+	fd = open(str, O_RDONLY);
+	free(str);
+	if (fd != -1)
+	{
+		rat = 0;
+		while (get_next_line(fd, &str) > 0)
+		{
+			(*str && *str != '#') ? gsh_pre_launch(gsh_pc_lines(str)) : 0;
+			free(str);
+			if ((rat = ft_atoi(gsh_get_env("?"))) > 255)
+			{
+				gsh_bucket(FREE_ALL, 0);
+				return (1);
+			}
+		}
+		close(fd);
+	}
+	return (0);
+}
+
+int			gsh_init(void)
 {
 	extern char	**environ;
 	char		**envcp;
+	int			i;
 
+	i = 0;
 	while (environ[i])
 		i++;
 	envcp = (char **)malloc(sizeof(char *) * (i + 1));
@@ -75,12 +107,13 @@ void		gsh_init(int i)
 	signal(SIGINT, SIG_IGN);
 	// signal(SIGQUIT, SIG_IGN);					//EMERGENCY EXIT ON!!!
 	signal(SIGTSTP, SIG_IGN);
-	signal(SIGINFO, SIG_IGN); 
+	signal(SIGINFO, SIG_IGN);
 	ft_bzero((void *)g_buffer, LINE_SIZE);
 	gsh_bucket(SAVE_ENV, envcp);
 	gsh_std_save_restore(SAVE);
 	gsh_init_env();
-	gsh_init_history();
+	gsh_h_init_history(NULL);
+	return (gsh_overwrite_env());
 }
 
 void		gsh_std_save_restore(int mod)
