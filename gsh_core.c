@@ -95,19 +95,20 @@ static void	gsh_readmoar_atzero(char **line)
 
 int			main(void)
 {
-	char	*line;
-	char	*ptr;
-	int		rat;
+	char			*line;
+	char			*ptr;
+	int				rat;
+	extern uint32_t	g_opt_n;
 
 	if (!isatty(0) || gsh_init())
 		return (0);
 	rat = 0;
-	// gsh_write_head();
+	(g_opt_n & GRAPHICS) ? gsh_write_head() : 0;
 	while (gsh_reader(&line, gsh_prompt(1)))
 	{
 		if (!line)
 			continue ;
-		gsh_r_history_bucket(ADD, line);
+		(g_opt_n & USE_HIST) ? gsh_r_history_bucket(ADD, line) : 0;
 		while ((ptr = ft_strrchr(line, 92)) && *(ptr + 1) == '\0'
 			&& *(ptr - 1) != 92)
 			gsh_readmoar_atzero(&line);
@@ -116,7 +117,7 @@ int			main(void)
 		if ((rat = ft_atoi(gsh_get_env("?"))) > 255)
 			break ;
 	}
-	// exit_draw();
+	(g_opt_n & GRAPHICS) ? exit_draw() : 0;
 	gsh_end();
 	return (rat);
 }

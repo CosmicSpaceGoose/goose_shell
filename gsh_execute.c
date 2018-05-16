@@ -98,9 +98,13 @@ int		gsh_launch_cmnd(char *cmd, char **av)
 
 int		gsh_os_cmd(char **cmd, char *path)
 {
-	char	name[NAMESIZE];
-	int		i;
+	char			name[NAMESIZE];
+	char			*str;
+	int				i;
+	extern uint32_t	g_opt_n;
 
+	if ((g_opt_n & USE_HASH) && (str = gsh_hash_search(*cmd)))
+		return (gsh_launch_cmnd(str, cmd));
 	while ((i = gsh_get_path_name(name, path, *cmd)))
 	{
 		if (!access(name, F_OK))

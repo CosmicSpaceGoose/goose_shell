@@ -105,7 +105,7 @@ static int	gsh_pipes(t_orba *z, int pps, int *fds)
 
 /*
 **		RUN (PIPES | NO_PIPES) & SET EXIT STATUS
-**		117:~~~~~ always tru, cause watch parcer.c:104
+**		117: zee->cmd always tru, cause watch parcer.c:104
 **		119: add write IN file if output redirection
 */
 
@@ -114,10 +114,8 @@ int			gsh_seek(t_orba *zee, int *pps, int *fds)
 	int		rat;
 	char	*str;
 
-	if (!(zee->cmd))
-	{
-		return (0);
-	}
+	if (!*(zee->cmd))
+		return (gsh_write_some_files(zee->red, 0));
 	if (pps[0] && pps[1] != END_PPL)
 		rat = gsh_pipes(zee, pps[1], fds);
 	else

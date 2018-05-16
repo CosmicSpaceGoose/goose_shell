@@ -61,10 +61,11 @@ static void	set_new_env(char *env, int mod)
 
 void		set_add_env(char *name, char *value, int mod)
 {
-	int		i;
-	char	*env;
-	char	*ptr;
-	char	**environ;
+	int				i;
+	char			*env;
+	char			*ptr;
+	char			**environ;
+	extern uint32_t	g_opt_n;
 
 	ptr = ft_strjoin(name, "=");
 	env = ft_strjoin(ptr, value);
@@ -76,6 +77,12 @@ void		set_add_env(char *name, char *value, int mod)
 		environ = gsh_bucket(mod, 0);
 		free(environ[i]);
 		environ[i] = ft_strdup(env);
+	}
+	if ((g_opt_n & USE_HASH) && (g_opt_n & UPD_HASH)
+		&& !ft_strcmp(name, "PATH"))
+	{
+		gsh_delete_hash_table();
+		gsh_init_hash_table();
 	}
 	free(env);
 }

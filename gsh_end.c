@@ -14,7 +14,7 @@
 
 void	gsh_end(void)
 {
-	/* */
+	gsh_delete_hash_table();
 	gsh_r_history_bucket(ERASE, NULL);
 	gsh_bucket(FREE_ALL, 0);
 	system("leaks 21sh | tail -n 4");

@@ -109,7 +109,7 @@ int			gsh_history(char **av)
 		else if (*(*av + 1) == 'n')
 			gsh_h_read_history(*(av + 1));
 		else if (*(*av + 1) == 'r')
-			gsh_h_init_history(*(av + 1));
+			gsh_h_init_hist(*(av + 1));
 		else if (*(*av + 1) == 'w')
 			return (gsh_h_write_history(*(av + 1), 03001));
 		else

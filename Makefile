@@ -15,6 +15,7 @@ CFLAGS = -Wall -Wextra -Werror $(INC)
 SRC =	gsh_core.c\
 		gsh_end.c\
 		gsh_execute.c\
+		gsh_hash_table.c\
 		gsh_init.c\
 		gsh_pipeline.c\
 		gsh_pipeline_toolz.c\
@@ -28,6 +29,7 @@ SRC =	gsh_core.c\
 		gsh_builtins/gsh_help.c\
 		gsh_builtins/gsh_history.c\
 		gsh_builtins/gsh_history_toolz.c\
+		gsh_builtins/gsh_options.c\
 		gsh_builtins/gsh_set_unset.c\
 		gsh_builtins/gsh_setenv.c\
 		gsh_builtins/gsh_some_builtin1.c\
@@ -111,6 +113,12 @@ ifeq ($(OS), Darwin)
 else
 	@make clean_lib -C ../../libft_win
 endif
+
+clear:
+	@echo "$(STRING2)"
+	@rm -rf $(OBJ)
+	@echo "$(STRING3)"
+	@rm -rf $(NAME)
 
 re: fclean all
 

@@ -15,23 +15,27 @@
 
 static void	gsh_help_commands(void)
 {
-	unsigned long		i;
-	extern const t_fptr	g_builtin[11];
+	unsigned			i;
+	unsigned			speed;
+	extern const t_fptr	g_builtin[BLTN_NUM];
 
+	speed = (unsigned)ft_atoi(gsh_get_env("GRAPHICS_OUTPUT_SPEED"));
+	if (speed > 100000)
+		speed = 100000;
 	i = 0;
 	ft_printf("  _____________/\\_________________________\n");
-	usleep(TIME);
+	usleep(speed);
 	ft_printf(" /            BUILT-IN COMMANDS           \\\n");
-	usleep(TIME);
-	while (i < 7)
+	usleep(speed);
+	while (g_builtin[i].name)
 	{
 		ft_printf("|  %3$s%4$-8s%1$s%5$-30s%2$s  |\n", WHT, NON, RED,
 		g_builtin[i].name, g_help[i]);
-		usleep(TIME);
+		usleep(speed);
 		i++;
 	}
 	ft_printf(" \\________________________________________/\n");
-	usleep(TIME);
+	usleep(speed);
 }
 
 int			gsh_help(char **av)

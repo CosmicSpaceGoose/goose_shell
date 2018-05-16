@@ -14,21 +14,26 @@
 
 void		gsh_write_head(void)
 {
+	unsigned	speed;
+
+	speed = (unsigned)ft_atoi(gsh_get_env("GRAPHICS_OUTPUT_SPEED"));
+	if (speed > 100000)
+		speed = 100000;
 	ft_printf("%s   __                 \n", WHT);
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("  /  \\%s___         #   ____ ____ ____\n", YLW);
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("%1$s |  %2$so%1$s |%3$s .\\        #  ||G |||S |||H ||\n\
 ", WHT, RED, YLW);
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("%s |    |%s   \\___    #  ||__|||__|||__||\n", WHT, YLW);
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("%s_/    |%s_______\\   #  |/__\\|/__\\|/__\\|\n", WHT, YLW);
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("%s      |%s-----/\n", WHT, YLW);
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("%s_____/%s\n", WHT, NON);
-	usleep(TIME);
+	usleep(speed);
 }
 
 size_t		gsh_prompt(int mod)
@@ -57,26 +62,31 @@ size_t		gsh_prompt(int mod)
 
 void		exit_draw(void)
 {
+	unsigned	speed;
+
+	speed = (unsigned)ft_atoi(gsh_get_env("GRAPHICS_OUTPUT_SPEED"));
+	if (speed > 100000)
+		speed = 100000;
 	ft_printf("\n%s____\n", WHT);
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("    \\\n");
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("_    \\______\n");
-	usleep(TIME);
+	usleep(speed);
 	ft_printf(" \\          \\\n");
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("  \\        \\ \\\n");
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("  |         \\_|\n");
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("  \\          /\n");
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("   \\________/\n");
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("%s    ||    ||\n", YLW);
-	usleep(TIME);
+	usleep(speed);
 	ft_printf("   /__\\  /__\\\n%s", NON);
-	usleep(TIME);
+	usleep(speed);
 }
 
 int			gsh_exit(char **av)

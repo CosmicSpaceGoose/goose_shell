@@ -43,8 +43,9 @@ char		*gsh_get_env(char *name)
 
 int			gsh_unsetenv(char **av)
 {
-	int		i;
-	char	**environ;
+	int				i;
+	char			**environ;
+	extern uint32_t	g_opt_n;
 
 	if (!*av)
 	{
@@ -57,12 +58,12 @@ int			gsh_unsetenv(char **av)
 		{
 			environ = gsh_bucket(RETURN_ENV, 0);
 			free(environ[i]);
-			while (environ[i])
-			{
-				environ[i] = environ[i + 1];
-				i++;
-			}
+			while (environ[i++])
+				environ[i - 1] = environ[i];
 		}
+		if ((g_opt_n & USE_HASH) && (g_opt_n & UPD_HASH)
+		&& !ft_strcmp(*av, "PATH"))
+			gsh_delete_hash_table();
 		av++;
 	}
 	return (0);

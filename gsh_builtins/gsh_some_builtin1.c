@@ -19,8 +19,8 @@
 
 int			gsh_builtin_cmd(char **cmd)
 {
-	extern const t_fptr	g_builtin[11];
-	int					i;
+	extern const t_fptr	g_builtin[BLTN_NUM];
+	unsigned			i;
 
 	i = 0;
 	while (g_builtin[i].name)

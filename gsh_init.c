@@ -12,7 +12,7 @@
 
 #include "gsh_core.h"
 
-void		gsh_h_init_history(char *str)
+void		gsh_h_init_hist(char *str)
 {
 	char	*file;
 	char	*line;
@@ -49,6 +49,7 @@ static void	gsh_init_env(void)
 	free(str);
 	set_add_env("HISTSIZE", "42", SH);
 	set_add_env("HISTFILESIZE", "42", SH);
+	set_add_env("GRAPHICS_OUTPUT_SPEED", "50000", SH);
 	set_add_env("HOME", getpwuid(getuid())->pw_dir, ENV);
 	getcwd(buf, BUFSIZE);
 	set_add_env("PWD", buf, ENV);
@@ -93,11 +94,13 @@ static int	gsh_overwrite_env(void)
 
 int			gsh_init(void)
 {
-	extern char	**environ;
-	char		**envcp;
-	int			i;
+	extern char		**environ;
+	extern uint32_t	g_opt_n;
+	char			**envcp;
+	int				i;
 
 	i = 0;
+	g_opt_n = DEFAULT_VALUE;
 	while (environ[i])
 		i++;
 	envcp = (char **)malloc(sizeof(char *) * (i + 1));
@@ -112,24 +115,8 @@ int			gsh_init(void)
 	gsh_bucket(SAVE_ENV, envcp);
 	gsh_std_save_restore(SAVE);
 	gsh_init_env();
-	gsh_h_init_history(NULL);
-	return (gsh_overwrite_env());
-}
-
-void		gsh_std_save_restore(int mod)
-{
-	static int	std[3];
-
-	if (mod)
-	{
-		std[0] = dup(0);
-		std[1] = dup(1);
-		std[2] = dup(2);
-	}
-	else
-	{
-		dup2(std[0], 0);
-		dup2(std[1], 1);
-		dup2(std[2], 2);
-	}
+	i = gsh_overwrite_env();
+	(g_opt_n & USE_HASH) ? gsh_init_hash_table() : 0;
+	(g_opt_n & LOAD_HIST) && (g_opt_n & USE_HIST) ? gsh_h_init_hist(NULL) : 0;
+	return (i);
 }

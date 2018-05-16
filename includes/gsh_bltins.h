@@ -13,7 +13,13 @@
 #ifndef GSH_BLTINS_H
 # define GSH_BLTINS_H
 
-const t_fptr	g_builtin[11] = {
+/*
+**	must be equal with BLTN_NUM in gsh_graphics.h
+*/
+
+# define BLTN_NUM 12
+
+const t_fptr	g_builtin[BLTN_NUM] = {
 	{"echo", gsh_echo},
 	{"cd", gsh_cd},
 	{"env", gsh_env},
@@ -24,6 +30,7 @@ const t_fptr	g_builtin[11] = {
 	{"history", gsh_history},
 	{"set", gsh_set},
 	{"unset", gsh_unset},
+	{"setopt", gsh_setopt},
 	{NULL, NULL}
 };
 

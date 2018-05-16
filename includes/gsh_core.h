@@ -28,7 +28,6 @@
 
 # define BUFSIZE 1024
 # define NAMESIZE 1024
-# define TIME 50000
 
 # define BLK "\e[30m"
 # define RED "\e[31m"
@@ -74,6 +73,20 @@
 # define ENV 0
 # define SH 2
 
+/*
+**	default value for g_opt_n in gsh_options.h and options flags
+*/
+
+# define DEFAULT_VALUE 255
+# define APPND_HIST 1
+# define COMPL_EMPTY 2
+# define USE_HIST 4
+# define LOAD_HIST 8
+# define SAVE_HIST 16
+# define GRAPHICS 32
+# define UPD_HASH 64
+# define USE_HASH 128
+
 typedef struct	s_ok
 {
 	char		*str;
@@ -110,7 +123,7 @@ int				gsh_execute(char *cmd, char **av);
 int				gsh_exit_status(int status, char *name);
 char			*gsh_get_env(char *name);
 int				gsh_get_path_name(char *out, char *path, char *name);
-void			gsh_h_init_history(char *str);
+void			gsh_h_init_hist(char *str);
 int				gsh_init(void);
 int				gsh_launch_cmnd(char *cmd, char **av);
 int				gsh_os_cmd(char **cmd, char *path);
@@ -123,10 +136,16 @@ void			gsh_pre_launch(t_ok **lines);
 void			gsh_std_save_restore(int mod);
 //void			gsh_readmoar_atzero(char **line);
 void			gsh_cycle(t_orba **z, int *pps, int *fds, int *cp);
+
 int				gsh_make_sum_redir(t_redir **red);
 void			gsh_open_close_pipes(int **fds, int **cp, int i, int mod);
 void			gsh_open_files(t_orba **z);
 void			gsh_close_files(t_orba *z, int *pps);
+int				gsh_write_some_files(t_redir **red, int i);
+
+void			gsh_init_hash_table(void);
+char			*gsh_hash_search(char *str);
+void			gsh_delete_hash_table(void);
 
 /*
 **		builtins
@@ -150,6 +169,7 @@ int				gsh_list_env(void);
 size_t			gsh_prompt(int mod);
 int				gsh_set(char **av);
 int				gsh_setenv(char **av);
+int				gsh_setopt(char **av);
 int				gsh_unset(char **av);
 int				gsh_unsetenv(char **av);
 void			gsh_write_head(void);

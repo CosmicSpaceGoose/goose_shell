@@ -16,7 +16,7 @@ static t_hist	*mega_uber_trivial_name_fo_function(t_hist *hist, t_hist *prev,
 	unsigned num)
 {
 	t_hist *next;
-	
+
 	next = hist->nxt;
 	free(hist->str);
 	free(hist->tmp);

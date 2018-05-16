@@ -13,14 +13,23 @@
 #ifndef GSH_GRAPHICS_H
 # define GSH_GRAPHICS_H
 
-char			*g_help[8] = {
+/*
+**	must be equal with BLTN_NUM in gsh_builtins.h
+*/
+
+# define BLTN_NUM 12
+
+const char			*g_help[11] = {
 	" - print some text in terminal",
 	" - change working directory",
 	" - env managment / run program",
-	" - add environment variable",
+	" - set environment variable",
 	" - delete environment variable",
 	" - exit goose_shell",
 	" - print this help page",
+	" - modificate shell history",
+	" - set local variable",
+	" - delete local variable",
 	0
 };
 

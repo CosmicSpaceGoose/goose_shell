@@ -100,8 +100,9 @@ static int		zeroed(char *out, size_t len)
 
 void			gsh_r_autocomplete(char *out, t_pos *pos)
 {
-	size_t	len;
-	char	s[LINE_SIZE];
+	size_t			len;
+	char			s[LINE_SIZE];
+	extern uint32_t	g_opt_n;
 
 	len = pos->kur;
 	while (len && out[len - 1] != ' ' && out[len - 1] != '\t'
@@ -112,6 +113,11 @@ void			gsh_r_autocomplete(char *out, t_pos *pos)
 		gsh_r_shift_right(pos);
 	ft_strncpy(s, out + len, pos->kur - len);
 	s[pos->kur - len] = 0;
+	if (!(g_opt_n & COMPL_EMPTY) && ft_is_blank(s))
+	{
+		write(0, "\a", 1);
+		return ;
+	}
 	if (zeroed(out, len) && *s != '~' && *s != '$' && *s != '.' && *s != '/'
 		&& *s != '!')
 		gogo_commandname(s, pos->kur - len, pos, out);

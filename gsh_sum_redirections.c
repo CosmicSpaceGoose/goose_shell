@@ -51,3 +51,50 @@ int			gsh_make_sum_redir(t_redir **red)
 	}
 	return (0);
 }
+
+int			gsh_write_some_files(t_redir **red, int i)
+{
+	int		k;
+	char	buf[BUFSIZE + 1];
+
+	while (red[i])
+	{
+		if (((red[i])->io == 'o' || (red[i])->io == 'O')
+			&& access((red[i])->ptr, W_OK))
+		{
+			ft_dprintf(2, "|< permission denied: %s\n", (red[i])->ptr);
+			return (1);
+		}
+		i++;
+	}
+	while ((i = read(0, buf, BUFSIZE)))
+	{
+		buf[i] = 0;
+		k = 0;
+		while (red[k])
+		{
+			if ((red[k])->io == 'o' || (red[k])->io == 'O')
+				write(red[k]->fd, buf, i);
+			k++;
+		}
+	}
+	return (0);
+}
+
+void		gsh_std_save_restore(int mod)
+{
+	static int	std[3];
+
+	if (mod)
+	{
+		std[0] = dup(0);
+		std[1] = dup(1);
+		std[2] = dup(2);
+	}
+	else
+	{
+		dup2(std[0], 0);
+		dup2(std[1], 1);
+		dup2(std[2], 2);
+	}
+}
