@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
+#include "gsh_core.h"
 
 /*
 **	PRINTABLE CHARACTERS & CONTROL CHARACTERS

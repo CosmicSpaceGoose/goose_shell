@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
+#include "gsh_core.h"
 
 static t_list	*get_list_elem(t_list *lst, int row, int col, int num_row)
 {

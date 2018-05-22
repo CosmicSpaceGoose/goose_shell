@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_parcer.h"
+#include "gsh_core.h"
 
 static int	gsh_read_var(char **cmd, char **ln, int *k)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
+#include "gsh_core.h"
 
 static void	gsh_r_copy_line(uintmax_t d, char *out, t_pos *pos)
 {
