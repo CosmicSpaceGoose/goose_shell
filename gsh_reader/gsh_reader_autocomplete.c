@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
 #include "gsh_core.h"
 
 static void		search_in_path(t_list **list, char *str, int i, size_t len)

@@ -94,7 +94,7 @@ else
 	make -C ../../libft_win
 endif
 
-%.o: %.c
+%.o: %.c $(INC)
 	$(CC) $(CFLAGS) -o $@ -c $<
 	
 clean:

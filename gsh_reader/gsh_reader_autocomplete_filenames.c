@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
 #include "gsh_core.h"
 
 static void		choose_mr_anderson(t_list **lst, char *name, char *path)
