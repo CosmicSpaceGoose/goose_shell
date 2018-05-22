@@ -94,8 +94,8 @@ else
 	make -C ../../libft_win
 endif
 
-%.o: %.c $(INC)
-	$(CC) $(CFLAGS) -o $@ -c $<
+%.o: %.c gsh_core.h
+	@$(CC) $(CFLAGS) -o $@ -c $<
 	
 clean:
 	@echo "$(STRING2)"

@@ -110,7 +110,7 @@ int			gsh_init(void)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
-	signal(SIGINFO, SIG_IGN);
+	//signal(SIGINFO, SIG_IGN);
 	ft_bzero((void *)g_buffer, LINE_SIZE);
 	gsh_bucket(SAVE_ENV, envcp);
 	gsh_std_save_restore(SAVE);

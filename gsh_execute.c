@@ -11,11 +11,45 @@
 /* ************************************************************************** */
 
 #include "gsh_core.h"
-#include "gsh_sgnl.h"
 
 /*
 **		CHECK COMMAND NAMES 'ERE
 */
+
+const char		*g_sig[] = {
+	"SIGHUP",
+	"SIGINT",
+	"gsh: quit  ",
+	"gsh: illegal instruction  ",
+	"gsh: trace trap  ",
+	"gsh: abort program  ",
+	"gsh: emulate instruction executed  ",
+	"gsh: floating-point exception  ",
+	"gsh: killed >:[  ",
+	"gsh: bus error  ",
+	"gsh: segmentation violation  ",
+	"gsh: non-existent system call invoked  ",
+	"SIGPIPE",
+	"SIGALRM",
+	"SIGTERM",
+	"SIGURG",
+	"SIGSTOP",
+	"SIGTSTP",
+	"SIGCONT",
+	"SIGCHLD",
+	"SIGTTIN",
+	"SIGTTOU",
+	"SIGIO",
+	"SIGXCPU",
+	"SIGXFSZ",
+	"SIGVTALRM",
+	"SIGPROF",
+	"SIGWINCH",
+	"SIGINFO",
+	"SIGUSR1",
+	"SIGUSR2",
+	NULL
+};
 
 int		gsh_get_path_name(char *out, char *path, char *name)
 {
