@@ -11,15 +11,28 @@
 /* ************************************************************************** */
 
 #include "gsh_core.h"
-#include "gsh_bltins.h"
 
 /*
 **	CD ECHO
 */
 
+const t_fptr	g_builtin[] = {
+	{"cd", gsh_cd},
+	{"echo", gsh_echo},
+	{"env", gsh_env},
+	{"exit", gsh_exit},
+	{"help", gsh_help},
+	{"history", gsh_history},
+	{"set", gsh_set},
+	{"setenv", gsh_setenv},
+	{"setopt", gsh_setopt},
+	{"unset", gsh_unset},
+	{"unsetenv", gsh_unsetenv},
+	{NULL, NULL}
+};
+
 int			gsh_builtin_cmd(char **cmd)
 {
-	extern const t_fptr	g_builtin[BLTN_NUM];
 	unsigned			i;
 
 	i = 0;

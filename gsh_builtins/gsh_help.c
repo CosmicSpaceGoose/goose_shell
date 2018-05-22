@@ -10,14 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_graphics.h"
 #include "gsh_core.h"
+
+const char			*g_help[] = {
+	" - change working directory",
+	" - print some text in terminal",
+	" - env managment & run program",
+	" - exit goose_shell",
+	" - print this help massege",
+	" - modificate shell history",
+	" - set local variable",
+	" - set environment variable",
+	" - change shell behavior",
+	" - delete local variable",
+	" - delete environment variable",
+	0
+};
 
 static void	gsh_help_commands_graph(void)
 {
-	unsigned			i;
-	unsigned			speed;
-	extern const t_fptr	g_builtin[BLTN_NUM];
+	unsigned	i;
+	unsigned	speed;
 
 	speed = (unsigned)ft_atoi(gsh_get_env("GRAPHICS_OUTPUT_SPEED"));
 	if (speed > 100000)
@@ -40,8 +53,7 @@ static void	gsh_help_commands_graph(void)
 
 static void	gsh_help_commands_non_gr(void)
 {
-	extern const t_fptr	g_builtin[BLTN_NUM];
-	unsigned			i;
+	unsigned	i;
 
 	i = 0;
 	ft_putstr("BUILT-IN COMMANDS:\n");

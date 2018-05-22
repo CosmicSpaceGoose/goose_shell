@@ -10,7 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_options.h"
+#include "gsh_core.h"
+
+const char	*g_opt[] = {
+	"appnd_hist_file",
+	"comp_empty_line",
+	"history_use",
+	"history_load",
+	"history_save",
+	"output_graphics",
+	"upd_hash_table",
+	"use_hash_table",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	0
+};
 
 static int	gsh_get_opt(char *str)
 {
