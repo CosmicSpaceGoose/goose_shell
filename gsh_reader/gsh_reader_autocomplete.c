@@ -105,8 +105,8 @@ void			gsh_r_autocomplete(char *out, t_pos *pos)
 	extern uint32_t	g_opt_n;
 
 	len = pos->kur;
-	while (len && out[len - 1] != ' ' && out[len - 1] != '\t'
-		&& out[len] != '$')
+	while (len && out[len - 1] != ' ' && out[len - 1] != '\t' && out[len] != '$'
+		&& out[len - 1] != ';' && out[len - 1] != '|' && out[len - 1] != '&')
 		len--;
 	while (pos->kur < pos->len && out[pos->kur] != ' ' && out[pos->kur] != '\t'
 	&& out[pos->kur] != ';' && out[pos->kur] != '|' && out[pos->kur] != '&')

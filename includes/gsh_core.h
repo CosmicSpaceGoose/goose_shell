@@ -134,7 +134,6 @@ t_ok			**gsh_pc_lines(char *line);
 int				gsh_pc_validate(t_ok **in);
 void			gsh_pre_launch(t_ok **lines);
 void			gsh_std_save_restore(int mod);
-//void			gsh_readmoar_atzero(char **line);
 void			gsh_cycle(t_orba **z, int *pps, int *fds, int *cp);
 
 int				gsh_make_sum_redir(t_redir **red);
@@ -175,9 +174,5 @@ int				gsh_unsetenv(char **av);
 void			gsh_write_head(void);
 void			set_add_env(char *name, char *value, int mod);
 int				set_brwse_env(char *name, int mod);
-
-//////////////////////////////////
-# define P(X) write(2, #X, 1);
-//////////////////////////////////
 
 #endif

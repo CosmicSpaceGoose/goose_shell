@@ -70,7 +70,7 @@ void		gsh_r_cut_copy_paste(t_ych u, char *out, t_pos *pos)
 	{
 		if (u.d == K_SHFT_ALT_UP)
 		{
-			gsh_r_home_end('H', pos);
+			gsh_r_home_end_tab('H', NULL, pos);
 			tputs(tgetstr("cd", 0), 1, ft_putint);
 			ft_bzero((void *)out, LINE_SIZE);
 			ft_strcpy(out, g_buffer);
@@ -82,7 +82,7 @@ void		gsh_r_cut_copy_paste(t_ych u, char *out, t_pos *pos)
 		{
 			ft_strcpy(g_buffer, out);
 			ft_bzero((void *)out, LINE_SIZE);
-			gsh_r_home_end('H', pos);
+			gsh_r_home_end_tab('H', NULL, pos);
 			tputs(tgetstr("cd", 0), 1, ft_putint);
 			pos->len = 0;
 		}

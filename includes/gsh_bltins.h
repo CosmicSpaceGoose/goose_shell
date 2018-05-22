@@ -20,17 +20,17 @@
 # define BLTN_NUM 12
 
 const t_fptr	g_builtin[BLTN_NUM] = {
-	{"echo", gsh_echo},
 	{"cd", gsh_cd},
+	{"echo", gsh_echo},
 	{"env", gsh_env},
-	{"setenv", gsh_setenv},
-	{"unsetenv", gsh_unsetenv},
 	{"exit", gsh_exit},
 	{"help", gsh_help},
 	{"history", gsh_history},
 	{"set", gsh_set},
-	{"unset", gsh_unset},
+	{"setenv", gsh_setenv},
 	{"setopt", gsh_setopt},
+	{"unset", gsh_unset},
+	{"unsetenv", gsh_unsetenv},
 	{NULL, NULL}
 };
 

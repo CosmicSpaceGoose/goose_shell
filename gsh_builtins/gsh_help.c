@@ -13,7 +13,7 @@
 #include "gsh_graphics.h"
 #include "gsh_core.h"
 
-static void	gsh_help_commands(void)
+static void	gsh_help_commands_graph(void)
 {
 	unsigned			i;
 	unsigned			speed;
@@ -38,9 +38,30 @@ static void	gsh_help_commands(void)
 	usleep(speed);
 }
 
+static void	gsh_help_commands_non_gr(void)
+{
+	extern const t_fptr	g_builtin[BLTN_NUM];
+	unsigned			i;
+
+	i = 0;
+	ft_putstr("BUILT-IN COMMANDS:\n");
+	while (g_builtin[i].name)
+	{
+		ft_printf("%-8s%-30s\n", g_builtin[i].name, g_help[i]);
+		i++;
+	}
+}
+
 int			gsh_help(char **av)
 {
+	extern uint32_t	g_opt_n;
+
 	if (*av == NULL)
-		gsh_help_commands();
+	{
+		if (g_opt_n & GRAPHICS)
+			gsh_help_commands_graph();
+		else
+			gsh_help_commands_non_gr();
+	}
 	return (0);
 }

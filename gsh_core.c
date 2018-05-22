@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlinkin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/15 16:32:53 by dlinkin           #+#    #+#             */
-/*   Updated: 2018/01/15 16:32:55 by dlinkin          ###   ########.fr       */
+/*   Created: 2018/05/21 14:47:11 by dlinkin           #+#    #+#             */
+/*   Updated: 2018/05/21 14:47:13 by dlinkin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ int			main(void)
 	int				rat;
 	extern uint32_t	g_opt_n;
 
-	if (!isatty(0) || gsh_init())
-		return (0);
 	rat = 0;
+	if (!isatty(0) || (rat = gsh_init()))
+		return (rat);
 	(g_opt_n & GRAPHICS) ? gsh_write_head() : 0;
 	while (gsh_reader(&line, gsh_prompt(1)))
 	{
@@ -117,7 +117,6 @@ int			main(void)
 		if ((rat = ft_atoi(gsh_get_env("?"))) > 255)
 			break ;
 	}
-	(g_opt_n & GRAPHICS) ? exit_draw() : 0;
 	gsh_end();
 	return (rat);
 }

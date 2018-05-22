@@ -13,7 +13,7 @@
 #include "gsh_reader.h"
 
 /*
-**	GSH_READER V10_05_18
+**	GSH_READER V21_05_18
 **
 **	MAIN CYCLE & BELL SIGNAL ON NON-VALID INPUT
 */
@@ -50,9 +50,6 @@ static int	gsh_reader_cycle(int i, char *out, t_pos *pos)
 	t_ych	u;
 
 	u.d = 0;
-	g_srch_md = 0;
-	sum_save_function_for_winsize(0, pos);
-	gsh_r_redraw_line(out, pos, 0, 2);
 	while ((i = read(0, u.c, 8)))
 	{
 		u.c[i] = 0;
@@ -74,18 +71,25 @@ static int	gsh_reader_cycle(int i, char *out, t_pos *pos)
 	return (i);
 }
 
-void		gsh_reader_signal(int signo)
+static int	gsh_reader_init(char **line, char *out, size_t prompt)
 {
-	if (signo == SIGWINCH)
-	{
-		sum_save_function_for_winsize(1, 0);
-		gsh_r_redraw_line(NULL, NULL, 0, 0);
-	}
-}
+	t_pos	*pos;
+	int		i;
 
-int			ft_putint(int c)
-{
-	return (write(0, &c, 1));
+	g_hst_sz = (unsigned)ft_atoi(gsh_get_env("HISTSIZE"));
+	g_srch_md = 0;
+	ft_bzero((void *)out, LINE_SIZE);
+	pos = (t_pos *)malloc(sizeof(t_pos));
+	pos->prompt = prompt;
+	gsh_r_history_bucket(CREATE, 0);
+	gsh_r_redraw_line(out, pos, 0, 2);
+	sum_save_function_for_winsize(0, pos);
+	if ((i = gsh_reader_cycle(0, out, pos)))
+		*line = ft_strdup(out);
+	if (ft_strchr(*line, '!'))
+		*line = gsh_r_history_replace_mark(*line, 0);
+	free(pos);
+	return (i);
 }
 
 int			gsh_reader(char **line, size_t prompt)
@@ -94,7 +98,6 @@ int			gsh_reader(char **line, size_t prompt)
 	struct termios	copy;
 	char			out[LINE_SIZE];
 	int				i;
-	t_pos			*pos;
 
 	tcgetattr(0, &tstr);
 	tgetent(0, gsh_get_env("TERM"));
@@ -102,16 +105,10 @@ int			gsh_reader(char **line, size_t prompt)
 	tstr.c_lflag ^= ICANON;
 	tstr.c_lflag ^= ECHO;
 	tstr.c_lflag ^= ISIG;
-	ft_bzero((void *)out, LINE_SIZE);
 	tcsetattr(0, TCSAFLUSH, &tstr);
-	g_hst_sz = (unsigned)ft_atoi(gsh_get_env("HISTSIZE"));
-	gsh_r_history_bucket(CREATE, 0);
-	pos = (t_pos *)malloc(sizeof(t_pos));
-	pos->prompt = prompt;
-	signal(SIGWINCH, gsh_reader_signal);
-	(i = gsh_reader_cycle(0, out, pos)) ? *line = ft_strdup(out) : 0;
-	ft_strchr(*line, '!') ? *line = gsh_r_history_replace_mark(*line, 0) : 0;
-	free(pos);
+	signal(SIGWINCH, gsh_r_signal);
+	*line = NULL;
+	i = gsh_reader_init(line, out, prompt);
 	signal(SIGWINCH, SIG_DFL);
 	tcsetattr(0, TCSANOW, &copy);
 	return (i);

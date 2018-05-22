@@ -60,11 +60,11 @@ static int	exclamation_replacer(char **ln, int *k, int z)
 	char	ptr[LINE_SIZE];
 	char	*str;
 
-	while((*ln)[*k + z++])
+	while ((*ln)[*k + z++])
 	{
 		if ((*ln)[*k + z] == ' ' || (*ln)[*k + z] == '\t' || (*ln)[*k + z] ==
-	'\n'|| (*ln)[*k + z] == '\n' || (*ln)[*k + z] == '\'' || (*ln)[*k + z] ==
-	';'	|| (*ln)[*k + z] == '|' || (*ln)[*k + z] == '&')
+	'\n' || (*ln)[*k + z] == '\n' || (*ln)[*k + z] == '\'' || (*ln)[*k + z] ==
+	';' || (*ln)[*k + z] == '|' || (*ln)[*k + z] == '&')
 			break ;
 		else
 			ptr[z - 1] = (*ln)[*k + z];
@@ -105,10 +105,10 @@ char		*gsh_r_history_replace_mark(char *ln, int k)
 			else
 				m = 1;
 		}
-		if (ln[k] == '\'')
-			c ^= 1;
+		(ln[k] == '\'') ? c ^= 1 : 0;
 		k++;
 	}
+	ln[k] = 0;
 	m ? ft_putendl(ln) : 0;
 	return (ln);
 }

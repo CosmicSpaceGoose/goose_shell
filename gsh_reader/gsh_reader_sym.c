@@ -83,14 +83,14 @@ int			gsh_r_ctrl_char(char c, char *out, t_pos *pos)
 {
 	if (c == 10 || (c == 4 && *out) || c == 3)
 	{
-		gsh_r_home_end('F', pos);
+		gsh_r_home_end_tab('F', NULL, pos);
 		c == 3 ? ft_bzero(out, LINE_SIZE) : 0;
 		write(0, "\n", 1);
 		return (1);
 	}
 	else if (c == 4 && !*out)
 	{
-		gsh_r_home_end('F', pos);
+		gsh_r_home_end_tab('F', NULL, pos);
 		write(0, "\n", 1);
 		return (0);
 	}

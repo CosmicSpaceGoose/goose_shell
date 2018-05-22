@@ -92,6 +92,6 @@ char		**gsh_bucket(int mod, char **in)
 		}
 	}
 	else if (mod == RETURN_SH)
-		return(sh);
+		return (sh);
 	return (env);
 }

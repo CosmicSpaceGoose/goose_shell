@@ -105,8 +105,6 @@ static int	gsh_pipes(t_orba *z, int pps, int *fds)
 
 /*
 **		RUN (PIPES | NO_PIPES) & SET EXIT STATUS
-**		117: zee->cmd always tru, cause watch parcer.c:104
-**		119: add write IN file if output redirection
 */
 
 int			gsh_seek(t_orba *zee, int *pps, int *fds)

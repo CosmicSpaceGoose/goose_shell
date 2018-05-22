@@ -6,7 +6,7 @@
 #    By: dlinkin <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/15 15:57:43 by dlinkin           #+#    #+#              #
-#    Updated: 2018/01/15 15:57:45 by dlinkin          ###   ########.fr        #
+#    Updated: 2018/05/21 12:12:43 by dlinkin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRC =	gsh_core.c\
 		gsh_reader/gsh_reader_autocomplete_drawing.c\
 		gsh_reader/gsh_reader_autocomplete_filenames.c\
 		gsh_reader/gsh_reader_cut_copy_paste.c\
+		gsh_reader/gsh_reader_drawing.c\
 		gsh_reader/gsh_reader_esc.c\
 		gsh_reader/gsh_reader_history.c\
 		gsh_reader/gsh_reader_history_exclamation.c\

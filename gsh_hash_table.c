@@ -29,21 +29,18 @@ static unsigned	hash_func(char *str)
 	return (i % TABLE_SIZE);
 }
 
-static void		func(char *name)
+static void		func(char *name, DIR *papka)
 {
-	DIR				*papka;
 	struct dirent	*file;
 	unsigned		key;
 
-	if (!(papka = opendir(name)))
+	if (!papka)
 		return ;
 	while ((file = readdir(papka)))
-	{
 		if (ft_strcmp(file->d_name, ".") && ft_strcmp(file->d_name, ".."))
 		{
 			key = hash_func(file->d_name);
 			if (g_arr[key])
-			{
 				while (g_arr[key])
 				{
 					if (ft_strcmp(file->d_name, g_arr[key][0]))
@@ -51,7 +48,6 @@ static void		func(char *name)
 					else
 						break ;
 				}
-			}
 			if (!g_arr[key])
 			{
 				g_arr[key] = (char **)malloc(sizeof(char *) * 2);
@@ -59,7 +55,6 @@ static void		func(char *name)
 				g_arr[key][1] = ft_strjoin(name, file->d_name);
 			}
 		}
-	}
 	closedir(papka);
 }
 
@@ -81,7 +76,7 @@ void			gsh_init_hash_table(void)
 		}
 		while ((i = gsh_get_path_name(name, path, "")))
 		{
-			func(name);
+			func(name, opendir(name));
 			path += i;
 			if (*path)
 				path++;

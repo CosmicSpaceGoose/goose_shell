@@ -40,7 +40,7 @@ static void	gsh_r_arrows(char c, t_pos *pos)
 	}
 }
 
-void		gsh_r_home_end(char c, t_pos *pos)
+void		gsh_r_home_end_tab(char c, char *out, t_pos *pos)
 {
 	if (c == 'H')
 		while (pos->kur)
@@ -48,6 +48,23 @@ void		gsh_r_home_end(char c, t_pos *pos)
 	else if (c == 'F')
 		while (pos->kur < pos->len)
 			gsh_r_shift_right(pos);
+	else if (c == 'Z')
+	{
+		if (pos->kur < pos->len)
+			ft_memmove(out + pos->kur + 8, out + pos->kur, ft_strlen(out)
+				- pos->kur);
+		ft_memcpy(out + pos->kur, "        ", 8);
+		pos->kur += 8;
+		pos->len += 8;
+		if (out[0])
+			gsh_r_redraw_line(out, pos, 8, 1);
+		if ((pos->kur + pos->prompt) % pos->col == 0)
+		{
+			if (pos->kur == pos->len)
+				tputs(tgetstr("do", 0), 1, ft_putint);
+			tputs(tgetstr("cr", 0), 1, ft_putint);
+		}
+	}
 }
 
 static void	gsh_r_pgup_pgdown(char c, char *out, t_pos *pos)
@@ -113,8 +130,8 @@ void		gsh_r_esc_seq(t_ych u, char *out, t_pos *pos)
 					, 1, ft_putint);
 			pos->len--;
 		}
-		else if (u.d == K_HOME || u.d == K_END)
-			gsh_r_home_end(u.c[2], pos);
+		else if (u.d == K_HOME || u.d == K_END || u.d == K_SHFT_TAB)
+			gsh_r_home_end_tab(u.c[2], out, pos);
 		else if (u.d == K_PG_UP || u.d == K_PG_DWN)
 			gsh_r_pgup_pgdown(u.c[2], out, pos);
 		else if (u.c[2] == '1')

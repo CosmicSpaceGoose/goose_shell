@@ -41,7 +41,7 @@ size_t		gsh_prompt(int mod)
 	char	buf[BUFSIZE];
 	char	*ptr;
 
-	if (!isatty(0))											//<<<---   0 -> 2
+	if (!isatty(2))
 		return (0);
 	getcwd(buf, BUFSIZE);
 	if (!ft_strcmp(buf, getpwuid(getuid())->pw_dir))
@@ -51,9 +51,9 @@ size_t		gsh_prompt(int mod)
 	if (mod)
 	{
 		if (*(ptr + 1))
-			ft_dprintf(0, "\e[37m%s > \e[0m", ptr + 1);		//<<<---   0 -> 2
+			ft_dprintf(2, "\e[36m%s > \e[0m", ptr + 1);
 		else
-			ft_dprintf(0, "\e[37m%s > \e[0m", ptr);			//<<<---   0 -> 2
+			ft_dprintf(2, "\e[36m%s > \e[0m", ptr);
 	}
 	if (*(ptr + 1))
 		return (ft_strlen(ptr) + 2);

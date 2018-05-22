@@ -84,7 +84,7 @@ static int	gsh_overwrite_env(void)
 			if ((rat = ft_atoi(gsh_get_env("?"))) > 255)
 			{
 				gsh_bucket(FREE_ALL, 0);
-				return (1);
+				return (rat);
 			}
 		}
 		close(fd);
@@ -108,7 +108,7 @@ int			gsh_init(void)
 	while (i--)
 		envcp[i] = ft_strdup(environ[i]);
 	signal(SIGINT, SIG_IGN);
-	// signal(SIGQUIT, SIG_IGN);					//EMERGENCY EXIT ON!!!
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGINFO, SIG_IGN);
 	ft_bzero((void *)g_buffer, LINE_SIZE);

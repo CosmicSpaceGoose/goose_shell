@@ -6,7 +6,7 @@
 /*   By: dlinkin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/23 13:11:37 by dlinkin           #+#    #+#             */
-/*   Updated: 2018/03/23 13:11:38 by dlinkin          ###   ########.fr       */
+/*   Updated: 2018/05/21 12:13:41 by dlinkin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ unsigned		g_hst_sz;
 # define K_ALT_RGHT 1130044187
 # define K_HOME 4741915
 # define K_END 4610843
+# define K_SHFT_TAB 5921563
 # define K_SHFT_UP 71683997260571
 # define K_SHFT_DWN 72783508888347
 # define K_SHFT_RGHT 73883020516123
@@ -96,7 +97,7 @@ int				gsh_r_ctrl_char(char c, char *out, t_pos *pos);
 t_hist			*gsh_r_erase_elem(t_hist *hist, unsigned num);
 void			gsh_r_esc_seq(t_ych u, char *out, t_pos *pos);
 t_hist			*gsh_r_history_bucket(int mod, char *str);
-void			gsh_r_home_end(char c, t_pos *pos);
+void			gsh_r_home_end_tab(char c, char *out, t_pos *pos);
 void			gsh_r_prnt_char(t_ych u, char *out, t_pos *pos, size_t size);
 void			gsh_r_redraw_line(char *out, t_pos *pos, size_t size, int mod);
 t_hist			*gsh_r_remove_history(t_hist *hist);
@@ -104,6 +105,7 @@ char			*gsh_r_history_replace_mark(char *line, int k);
 void			gsh_r_search(t_ych u, char *out, t_pos *pos);
 void			gsh_r_shift_left(t_pos *pos);
 void			gsh_r_shift_right(t_pos *pos);
+void			gsh_r_signal(int signo);
 void			gsh_r_cut_copy_paste(t_ych u, char *out, t_pos *pos);
 void			gogo_filename(char *str, size_t len, t_pos *pos, char *out);
 void			reprint(t_list *lst, char *out, t_pos *pos, size_t len);

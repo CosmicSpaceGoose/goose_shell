@@ -19,17 +19,18 @@
 
 # define BLTN_NUM 12
 
-const char			*g_help[11] = {
-	" - print some text in terminal",
+const char			*g_help[12] = {
 	" - change working directory",
-	" - env managment / run program",
-	" - set environment variable",
-	" - delete environment variable",
+	" - print some text in terminal",
+	" - env managment & run program",
 	" - exit goose_shell",
-	" - print this help page",
+	" - print this help massege",
 	" - modificate shell history",
 	" - set local variable",
+	" - set environment variable",
+	" - change shell behavior",
 	" - delete local variable",
+	" - delete environment variable",
 	0
 };
 

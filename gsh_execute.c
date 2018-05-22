@@ -70,7 +70,7 @@ int		gsh_execute(char *cmd, char **av)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		signal(SIGTSTP, SIG_DFL);
+		signal(SIGTSTP, SIG_IGN);
 		execve(cmd, av, gsh_bucket(RETURN_ENV, 0));
 		ft_dprintf(2, "|< permission denied: %s\n", cmd);
 		return (126);
