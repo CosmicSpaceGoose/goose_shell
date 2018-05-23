@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
+#include "gsh_core.h"
 
 static int	gsh_r_search_check(t_hist *hist)
 {

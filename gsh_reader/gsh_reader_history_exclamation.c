@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
+#include "gsh_core.h"
 
 static char	*search_hist_by_number(char *ptr, t_hist *hist)
 {
@@ -108,7 +108,7 @@ char		*gsh_r_history_replace_mark(char *ln, int k)
 		(ln[k] == '\'') ? c ^= 1 : 0;
 		k++;
 	}
-	ln[k] = 0;
+	ln ? ln[k] = 0 : 0;
 	m ? ft_putendl(ln) : 0;
 	return (ln);
 }

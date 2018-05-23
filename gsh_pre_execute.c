@@ -77,7 +77,6 @@ static int	gsh_pipes_exec(char **cmd)
 
 static int	gsh_pipes(t_orba *z, int pps, int *fds)
 {
-	int st;
 	int id;
 
 	if (!(id = fork()))
@@ -95,9 +94,8 @@ static int	gsh_pipes(t_orba *z, int pps, int *fds)
 	}
 	else if (id > 0)
 	{
-		wait(&st);
 		close(fds[1]);
-		return (gsh_exit_status(st, *(z->cmd)));
+		return (0);
 	}
 	write(2, "|< Alarma!! Can't make fork!\n", 31);
 	return (1);

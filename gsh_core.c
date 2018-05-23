@@ -80,23 +80,10 @@ void		gsh_pre_launch(t_ok **lines)
 	}
 }
 
-static void	gsh_readmoar_atzero(char **line)
-{
-	char *ptr;
-	char *tmp;
-
-	gsh_reader(&tmp, write(0, "> ", 2));
-	ptr = ft_strsub(*line, 0, ft_strlen(*line) - 1);
-	free(*line);
-	*line = ft_strjoin(ptr, tmp);
-	free(tmp);
-	free(ptr);
-}
-
 int			main(void)
 {
 	char			*line;
-	char			*ptr;
+	int				i;
 	int				rat;
 	extern uint32_t	g_opt_n;
 
@@ -109,9 +96,8 @@ int			main(void)
 		if (!line)
 			continue ;
 		(g_opt_n & USE_HIST) ? gsh_r_history_bucket(ADD, line) : 0;
-		while ((ptr = ft_strrchr(line, 92)) && *(ptr + 1) == '\0'
-			&& *(ptr - 1) != 92)
-			gsh_readmoar_atzero(&line);
+		while ((i = gsh_chaek_extr(line)))
+			gsh_extraction(&line, i);
 		*line ? gsh_pre_launch(gsh_pc_lines(line)) : 0;
 		free(line);
 		if ((rat = ft_atoi(gsh_get_env("?"))) > 255)

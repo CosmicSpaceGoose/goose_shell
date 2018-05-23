@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
+#include "gsh_core.h"
 
 static void		gsh_r_check_size(t_hist *hist)
 {

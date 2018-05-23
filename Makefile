@@ -15,6 +15,7 @@ CFLAGS = -Wall -Wextra -Werror $(INC)
 SRC =	gsh_core.c\
 		gsh_end.c\
 		gsh_execute.c\
+		gsh_extraction.c\
 		gsh_hash_table.c\
 		gsh_init.c\
 		gsh_pipeline.c\
@@ -57,6 +58,7 @@ SRC =	gsh_core.c\
 		
 
 OBJ = $(SRC:.c=.o)
+HEAD = includes/gsh_core.h
 
 OS = $(shell uname)
 ifeq ($(OS),Darwin)
@@ -81,21 +83,23 @@ STRING5 = $(CYAN)---Copy binary file in ~/my_bin$(NON)
 
 .PHONY: $(LIBA)
 
-all: $(LIBA) $(NAME)
+all: library $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "$(STRING1)"
-	$(CC) $(CFLAGS) $(OBJ) $(LIBA) $(TCAP) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBA) $(TCAP) -o $(NAME)
+	@echo "\x1b[36mcomp\x1b[0m..."$(NAME)"...\x1b[32mOK\x1b[0m\n"
 
-$(LIBA):
+library: $(LIBA)
 ifeq ($(OS), Darwin)
 	@make -C ./libft
 else
-	make -C ../../libft_win
+	@make -C ../../libft_win
 endif
 
-%.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+%.o: %.c $(HEAD)
+	@$(CC) $(CFLAGS) -o $@ -c $<
+	@echo "\x1b[36mcomp\x1b[0m..."$@
 	
 clean:
 	@echo "$(STRING2)"

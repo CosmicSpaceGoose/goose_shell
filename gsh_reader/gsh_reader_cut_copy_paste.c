@@ -10,29 +10,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
+#include "gsh_core.h"
 
-static void	gsh_r_copy_line(uintmax_t d, char *out, t_pos *pos)
+static void	gsh_r_paste_buffer(char *out, t_pos *pos)
 {
 	size_t size;
 
-	if (d == K_SHFT_UP)
+	size = ft_strlen(g_buffer);
+	if (pos->kur < pos->len)
+		ft_memmove(out + pos->kur + size, out + pos->kur, pos->len
+			- pos->kur);
+	ft_memcpy(out + pos->kur, g_buffer, size);
+	pos->kur += size;
+	pos->len += size;
+	gsh_r_redraw_line(out, pos, size, 1);
+	if ((pos->kur + pos->prompt) % pos->col == 0)
 	{
-		size = ft_strlen(g_buffer);
-		if (pos->kur < pos->len)
-			ft_memmove(out + pos->kur + size, out + pos->kur, pos->len
-				- pos->kur);
-		ft_memcpy(out + pos->kur, g_buffer, size);
-		pos->kur += size;
-		pos->len += size;
-		gsh_r_redraw_line(out, pos, size, 1);
-		if ((pos->kur + pos->prompt) % pos->col == 0)
-		{
-			if (pos->kur == pos->len)
-				tputs(tgetstr("do", 0), 1, ft_putint);
-			tputs(tgetstr("cr", 0), 1, ft_putint);
-		}
+		if (pos->kur == pos->len)
+			tputs(tgetstr("do", 0), 1, ft_putint);
+		tputs(tgetstr("cr", 0), 1, ft_putint);
 	}
+}
+
+static void	gsh_r_copy_line(uintmax_t d, char *out, t_pos *pos)
+{
+	if (d != K_SHFT_UP)
+		ft_bzero(g_buffer, LINE_SIZE);
+	if (d == K_SHFT_UP)
+		gsh_r_paste_buffer(out, pos);
 	else if (d == K_SHFT_DWN)
 		ft_strcpy(g_buffer, out);
 	else if (d == K_SHFT_RGHT)
@@ -43,6 +48,7 @@ static void	gsh_r_copy_line(uintmax_t d, char *out, t_pos *pos)
 
 static void	gsh_r_cut_left_right(uintmax_t d, char *out, t_pos *pos)
 {
+	ft_bzero(g_buffer, LINE_SIZE);
 	if (d == K_SHFT_ALT_RGHT)
 	{
 		ft_strcpy(g_buffer, out + pos->kur);

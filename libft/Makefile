@@ -13,6 +13,7 @@
 CC = gcc
 NAME = libftprintf.a
 INC = ./includes
+HEAD = 
 CFLAGS = -Wall -Wextra -Werror -I$(INC)
 SRC = ft_atoi.c\
 	ft_bzero.c\
@@ -108,9 +109,15 @@ $(NAME): $(OBJ)
 	@echo "$(STRING1)"
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
+	@echo "\x1b[34mcomp\x1b[0m..."$(NAME)"...\x1b[32mOK\x1b[0m\n"
 
-%.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+get_next_line.o: get_next_line.c includes/get_next_line.h includes/libft.h
+	@$(CC) $(CFLAGS) -o get_next_line.o -c get_next_line.c
+	@echo "\x1b[34mcomp\x1b[0m...get_next_line.o"
+
+%.o: %.c includes/libft.h includes/libftprintf.h
+	@$(CC) $(CFLAGS) -o $@ -c $<
+	@echo "\x1b[34mcomp\x1b[0m..."$@
 
 clean:
 	@echo "$(STRING2)"

@@ -41,9 +41,9 @@ int			gsh_make_sum_redir(t_redir **red)
 				ft_dprintf(2, "|< permission denied: %s\n", (*red)->ptr);
 			return (1);
 		}
-		else if (!(*red)->ptr && fstat((*red)->new, &bu))
+		else if (!(*red)->ptr && fstat((*red)->new, &bu) && (*red)->new != -1)
 		{
-			ft_dprintf(2, "|< bad file descriptor: %d\n", (*red)->ptr);
+			ft_dprintf(2, "|< bad file descriptor: %d\n", (*red)->new);
 			return (1);
 		}
 		gsh_sum(*red);

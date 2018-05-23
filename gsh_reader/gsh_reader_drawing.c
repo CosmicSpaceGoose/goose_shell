@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gsh_reader.h"
+#include "gsh_core.h"
 
 static void	gsh_redraw_on_resize(char *save_out, t_pos *save_pos)
 {

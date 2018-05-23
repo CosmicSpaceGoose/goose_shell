@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "gsh_core.h"
-#include "gsh_hash.h"
 
 static unsigned	hash_func(char *str)
 {
