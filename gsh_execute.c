@@ -29,7 +29,7 @@ const char		*g_sig[] = {
 	"gsh: bus error  ",
 	"gsh: segmentation violation  ",
 	"gsh: non-existent system call invoked  ",
-	"SIGPIPE",
+	"gsh: broken pipe  ",
 	"SIGALRM",
 	"SIGTERM",
 	"SIGURG",

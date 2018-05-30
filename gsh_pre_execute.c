@@ -95,6 +95,7 @@ static int	gsh_pipes(t_orba *z, int pps, int *fds)
 	else if (id > 0)
 	{
 		close(fds[1]);
+		close(fds[-2]);
 		return (0);
 	}
 	write(2, "|< Alarma!! Can't make fork!\n", 31);

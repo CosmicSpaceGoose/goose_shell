@@ -195,6 +195,7 @@ char				g_buffer[LINE_SIZE];
 int					g_srch_md;
 char				g_srch_buf[SRCH_BUF_SIZE];
 unsigned			g_hst_sz;
+int					g_pipe;
 
 char				**gsh_bucket(int mod, char **in);
 void				gsh_end(void);
@@ -203,7 +204,7 @@ int					gsh_exit_status(int status, char *name);
 char				*gsh_get_env(char *name);
 int					gsh_get_path_name(char *out, char *path, char *name);
 void				gsh_h_init_hist(char *str);
-int					gsh_init(void);
+int					gsh_init(int i);
 int					gsh_launch_cmnd(char *cmd, char **av);
 int					gsh_os_cmd(char **cmd, char *path);
 t_orba				**gsh_parcer(t_ok **lines);
@@ -222,8 +223,8 @@ int					gsh_write_some_files(t_redir **red, int i);
 void				gsh_init_hash_table(void);
 char				*gsh_hash_search(char *str);
 void				gsh_delete_hash_table(void);
-int			gsh_chaek_extr(char *line);
-void	gsh_extraction(char **line, int err);
+int					gsh_chaek_extr(char *line);
+void				gsh_extraction(char **line, int err);
 
 /*
 **		builtins
@@ -282,8 +283,10 @@ t_hist				*gsh_r_erase_elem(t_hist *hist, unsigned num);
 void				gsh_r_esc_seq(t_ych u, char *out, t_pos *pos);
 t_hist				*gsh_r_history_bucket(int mod, char *str);
 void				gsh_r_home_end_tab(char c, char *out, t_pos *pos);
-void				gsh_r_prnt_char(t_ych u, char *out, t_pos *pos, size_t size);
-void				gsh_r_redraw_line(char *out, t_pos *pos, size_t size, int mod);
+void				gsh_r_prnt_char(t_ych u, char *out, t_pos *pos,
+	size_t size);
+void				gsh_r_redraw_line(char *out, t_pos *pos, size_t size,
+	int mod);
 t_hist				*gsh_r_remove_history(t_hist *hist);
 char				*gsh_r_history_replace_mark(char *line, int k);
 void				gsh_r_search(t_ych u, char *out, t_pos *pos);

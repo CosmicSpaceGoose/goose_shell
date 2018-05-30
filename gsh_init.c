@@ -92,15 +92,14 @@ static int	gsh_overwrite_env(void)
 	return (0);
 }
 
-int			gsh_init(void)
+int			gsh_init(int i)
 {
 	extern char		**environ;
 	extern uint32_t	g_opt_n;
 	char			**envcp;
-	int				i;
 
-	i = 0;
 	g_opt_n = DEFAULT_VALUE;
+	g_pipe = 0;
 	while (environ[i])
 		i++;
 	envcp = (char **)malloc(sizeof(char *) * (i + 1));
@@ -110,6 +109,7 @@ int			gsh_init(void)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGINFO, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	ft_bzero((void *)g_buffer, LINE_SIZE);
 	gsh_bucket(SAVE_ENV, envcp);
 	gsh_std_save_restore(SAVE);

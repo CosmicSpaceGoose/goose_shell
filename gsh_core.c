@@ -88,7 +88,7 @@ int			main(void)
 	extern uint32_t	g_opt_n;
 
 	rat = 0;
-	if (!isatty(0) || (rat = gsh_init()))
+	if (!isatty(0) || (rat = gsh_init(0)))
 		return (rat);
 	(g_opt_n & GRAPHICS) ? gsh_write_head() : 0;
 	while (gsh_reader(&line, gsh_prompt(1)))
