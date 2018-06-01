@@ -95,7 +95,8 @@ void		gsh_parcer_part(char *ln, char **cmd, char **red, int *c)
 		c[2] = 0;
 		while (*ln == ' ' || *ln == '\t')
 			ln++;
-		if (*ln != '<' && *ln != '>' && *(ln + 1) != '<' && *(ln + 1) != '>')
+		if (*ln != '<' && *ln != '>' && !(ft_isdigit(*ln)
+			&& (ln[1] == '<' || ln[1] == '>')))
 		{
 			if ((c[3] = gsh_word(ln, &c[2], 0)))
 			{

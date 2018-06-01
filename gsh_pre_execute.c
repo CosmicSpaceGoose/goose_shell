@@ -111,7 +111,9 @@ int			gsh_seek(t_orba *zee, int *pps, int *fds)
 	int		rat;
 	char	*str;
 
-	if (!*(zee->cmd))
+	if (!zee->cmd && !zee->red)
+		return (0);
+	if (!*(zee->cmd) && zee->red)
 		return (gsh_write_some_files(zee->red, 0));
 	if (pps[0] && pps[1] != END_PPL)
 		rat = gsh_pipes(zee, pps[1], fds);

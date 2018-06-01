@@ -60,8 +60,9 @@ static int	exclamation_replacer(char **ln, int *k, int z)
 	char	ptr[LINE_SIZE];
 	char	*str;
 
-	while ((*ln)[*k + z++])
+	while ((*ln)[*k + z])
 	{
+		z++;
 		if ((*ln)[*k + z] == ' ' || (*ln)[*k + z] == '\t' || (*ln)[*k + z] ==
 	'\n' || (*ln)[*k + z] == '\n' || (*ln)[*k + z] == '\'' || (*ln)[*k + z] ==
 	';' || (*ln)[*k + z] == '|' || (*ln)[*k + z] == '&')
@@ -72,15 +73,14 @@ static int	exclamation_replacer(char **ln, int *k, int z)
 	ptr[z - 1] = 0;
 	if ((str = srana_func(ptr)))
 	{
-		*ln = ft_realloc(ft_strlen(*ln) - z + ft_strlen(str),
-			ft_strlen(*ln), *ln);
+		*ln = ft_realloc(ft_strlen(*ln) - z + ft_strlen(str) + 1,
+			ft_strlen(*ln) + 1, *ln);
 		ft_memmove(*ln + *k + ft_strlen(str), *ln + *k + z,
 			ft_strlen(*ln) - *k - z + 1);
 		ft_memmove(*ln + *k, str, ft_strlen(str));
 		*k += ft_strlen(str);
 		return (1);
 	}
-	ft_dprintf(2, "%s%s\n", "|< event not found: ", ptr);
 	return (0);
 }
 

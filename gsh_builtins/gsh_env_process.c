@@ -100,7 +100,7 @@ int			gsh_env(char **av)
 		exit(env_launch(av));
 	else if (id > 0)
 	{
-		wait(&st);
+		waitpid(id, &st, 0);
 		return (gsh_exit_status(st, *av));
 	}
 	ft_dprintf(2, "env: Alarma!! Can't make fork!\n");
