@@ -31,10 +31,10 @@ static int	gsh_reader_bell_chaek(t_ych in, t_pos *pos, char *out)
 		|| in.d == K_SHFT_LFT || in.d == K_SHFT_ALT_LFT) && !(pos->kur)
 		&& !g_srch_md)
 		return (1);
-	else if (in.d == K_ARRW_UP && !((pos->kur + pos->prompt) / pos->col)
+	else if (in.d == K_ALT_UP && !((pos->kur + pos->prompt) / pos->col)
 		&& !g_srch_md)
 		return (1);
-	else if (in.d == K_ARRW_DWN && !(((pos->len + pos->prompt) /
+	else if (in.d == K_ALT_DWN && !(((pos->len + pos->prompt) /
 		pos->col) - ((pos->kur + pos->prompt) / pos->col)) && !g_srch_md)
 		return (1);
 	else if ((in.d == 127 && !(pos->kur) && !g_srch_md) || ((in.d != 127 &&

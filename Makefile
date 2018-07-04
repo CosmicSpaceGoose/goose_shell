@@ -55,7 +55,7 @@ SRC =	gsh_core.c\
 		gsh_parcer/gsh_parcer_redir.c\
 		gsh_parcer/gsh_pre_parcer.c\
 		gsh_parcer/gsh_pre_pc_val.c
-		
+
 
 OBJ = $(SRC:.c=.o)
 HEAD = includes/gsh_core.h
@@ -100,7 +100,7 @@ endif
 %.o: %.c $(HEAD)
 	@$(CC) $(CFLAGS) -o $@ -c $<
 	@echo "\x1b[36mcomp\x1b[0m..."$@
-	
+
 clean:
 	@echo "$(STRING2)"
 	@rm -rf $(OBJ)
@@ -122,6 +122,8 @@ endif
 clear:
 	@echo "$(STRING2)"
 	@rm -rf $(OBJ)
+
+fclear: clear
 	@echo "$(STRING3)"
 	@rm -rf $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: dlinkin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 14:47:11 by dlinkin           #+#    #+#             */
-/*   Updated: 2018/05/21 14:47:13 by dlinkin          ###   ########.fr       */
+/*   Updated: 2018/06/03 12:47:37 by dlinkin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,6 @@ int			main(void)
 			break ;
 	}
 	gsh_end();
+	system("leaks -quiet 21sh");
 	return (rat);
 }

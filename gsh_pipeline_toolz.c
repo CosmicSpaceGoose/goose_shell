@@ -69,7 +69,7 @@ void		gsh_open_files(t_orba **z)
 {
 	int		k;
 
-	while (*z && ((*z)->tok != 'e' || (*z)->tok != 'a' || (*z)->tok != 'o'))
+	while (*z && ((*z)->tok != 'e' && (*z)->tok != 'a' && (*z)->tok != 'o'))
 	{
 		if ((*z)->red)
 		{
